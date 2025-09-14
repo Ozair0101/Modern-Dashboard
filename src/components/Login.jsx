@@ -19,6 +19,7 @@ const Login = () => {
     setLoading(true);
     setError('');
 
+    console.log('Form submitted with:', { email, password }); // Debug log
     const result = await login(email, password);
     
     if (!result.success) {
@@ -62,9 +63,21 @@ const Login = () => {
 
           {/* Demo Credentials */}
           <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg animate-fade-in-up-delay-200">
-            <div className="flex items-center mb-2">
-              <i className="fas fa-info-circle text-blue-500 mr-2"></i>
-              <span className="text-sm font-medium text-blue-800">Demo Credentials</span>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center">
+                <i className="fas fa-info-circle text-blue-500 mr-2"></i>
+                <span className="text-sm font-medium text-blue-800">Demo Credentials</span>
+              </div>
+              <button 
+                type="button"
+                onClick={() => {
+                  setEmail('admin@dashboard.com');
+                  setPassword('admin123');
+                }}
+                className="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+              >
+                Auto Fill
+              </button>
             </div>
             <div className="text-sm text-blue-700 space-y-1">
               <div className="flex items-center">
