@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const DashboardLayout = ({ children }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -13,155 +14,201 @@ const DashboardLayout = ({ children }) => {
   };
 
   const menuItems = [
-    { path: '/dashboard', icon: 'ni ni-tv-2', label: 'Dashboard', color: 'text-blue-500' },
-    { path: '/dashboard/tables', icon: 'ni ni-calendar-grid-58', label: 'Tables', color: 'text-orange-500' },
-    { path: '/dashboard/billing', icon: 'ni ni-credit-card', label: 'Billing', color: 'text-emerald-500' },
-    { path: '/dashboard/virtual-reality', icon: 'ni ni-app', label: 'Virtual Reality', color: 'text-cyan-500' },
-    { path: '/dashboard/rtl', icon: 'ni ni-world-2', label: 'RTL', color: 'text-red-600' },
+    { path: '/dashboard', icon: 'fas fa-chart-line', label: 'Dashboard', color: 'text-blue-500' },
+    { path: '/dashboard/tables', icon: 'fas fa-table', label: 'Tables', color: 'text-orange-500' },
+    { path: '/dashboard/billing', icon: 'fas fa-credit-card', label: 'Billing', color: 'text-emerald-500' },
+    { path: '/dashboard/virtual-reality', icon: 'fas fa-cube', label: 'Virtual Reality', color: 'text-cyan-500' },
+    { path: '/dashboard/rtl', icon: 'fas fa-globe', label: 'RTL', color: 'text-red-500' },
   ];
 
   const accountItems = [
-    { path: '/dashboard/profile', icon: 'ni ni-single-02', label: 'Profile', color: 'text-slate-700' },
+    { path: '/dashboard/profile', icon: 'fas fa-user', label: 'Profile', color: 'text-gray-600' },
   ];
 
   const isActiveRoute = (path) => {
     return location.pathname === path;
   };
 
+  const getCurrentPageTitle = () => {
+    const path = location.pathname;
+    if (path === '/dashboard') return 'Dashboard';
+    return path.split('/').pop()?.replace('-', ' ').split(' ').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ') || 'Dashboard';
+  };
+
   return (
-    <div className="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
-      {/* External styles for dashboard */}
-      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-      <script src="https://kit.fontawesome.com/42d5adcbca.js" crossOrigin="anonymous"></script>
-      <link href="https://themewagon.github.io/argon-dashboard-tailwind/assets/css/nucleo-icons.css" rel="stylesheet" />
-      <link href="https://themewagon.github.io/argon-dashboard-tailwind/assets/css/nucleo-svg.css" rel="stylesheet" />
-      <link href="https://themewagon.github.io/argon-dashboard-tailwind/assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet" />
-      
-      <div className="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
-      
+    <div className="dashboard-layout">
       {/* Sidebar */}
-      <aside className="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0" aria-expanded="false">
-        <div className="h-19">
-          <Link className="block px-8 py-6 m-0 text-sm whitespace-nowrap dark:text-white text-slate-700" to="/dashboard">
-            <img src="https://themewagon.github.io/argon-dashboard-tailwind/assets/img/logo-ct-dark.png" className="inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8" alt="main_logo" />
-            <img src="https://themewagon.github.io/argon-dashboard-tailwind/assets/img/logo-ct.png" className="hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8" alt="main_logo" />
-            <span className="ml-1 font-semibold transition-all duration-200 ease-nav-brand">Argon Dashboard 2</span>
+      <aside className={`dashboard-sidebar ${
+        sidebarOpen ? 'mobile-open' : 'mobile-hidden'
+      } lg:translate-x-0`}>
+        {/* Sidebar Header */}
+        <div className="p-6 border-b border-gray-100">
+          <Link to="/dashboard" className="flex items-center group">
+            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform">
+              <i className="fas fa-cube text-white text-sm"></i>
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">ModernDash</h2>
+              <p className="text-xs text-gray-500">Admin Panel</p>
+            </div>
           </Link>
         </div>
 
-        <hr className="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
-
-        <div className="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
-          <ul className="flex flex-col pl-0 mb-0">
+        {/* Navigation */}
+        <nav className="flex-1 p-4 space-y-2 custom-scrollbar overflow-y-auto">
+          {/* Main Menu */}
+          <div className="space-y-1">
             {menuItems.map((item) => (
-              <li key={item.path} className="mt-0.5 w-full">
-                <Link 
-                  className={`py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold transition-colors ${
-                    isActiveRoute(item.path) 
-                      ? 'bg-blue-500/13 dark:text-white dark:opacity-80 text-slate-700' 
-                      : 'dark:text-white dark:opacity-80 text-slate-700'
-                  }`} 
-                  to={item.path}
-                >
-                  <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                    <i className={`relative top-0 text-sm leading-normal ${item.color} ${item.icon}`}></i>
-                  </div>
-                  <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">{item.label}</span>
-                </Link>
-              </li>
-            ))}
-
-            <li className="w-full mt-4">
-              <h6 className="pl-6 ml-2 text-xs font-bold leading-tight uppercase dark:text-white opacity-60">Account pages</h6>
-            </li>
-
-            {accountItems.map((item) => (
-              <li key={item.path} className="mt-0.5 w-full">
-                <Link 
-                  className={`py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold transition-colors ${
-                    isActiveRoute(item.path) 
-                      ? 'bg-blue-500/13 dark:text-white dark:opacity-80 text-slate-700' 
-                      : 'dark:text-white dark:opacity-80 text-slate-700'
-                  }`} 
-                  to={item.path}
-                >
-                  <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                    <i className={`relative top-0 text-sm leading-normal ${item.color} ${item.icon}`}></i>
-                  </div>
-                  <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">{item.label}</span>
-                </Link>
-              </li>
-            ))}
-
-            <li className="mt-0.5 w-full">
-              <button 
-                onClick={handleLogout}
-                className="py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold transition-colors dark:text-white dark:opacity-80 text-slate-700 w-full text-left hover:bg-gray-100"
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`dashboard-nav-item group ${
+                  isActiveRoute(item.path) ? 'active bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'
+                }`}
               >
-                <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                  <i className="relative top-0 text-sm leading-normal text-red-500 fas fa-sign-out-alt"></i>
-                </div>
-                <span className="ml-1 duration-300 opacity-100 pointer-events-none ease">Logout</span>
+                <i className={`dashboard-nav-icon ${item.icon} ${
+                  isActiveRoute(item.path) ? 'text-blue-600' : item.color
+                } group-hover:scale-110 transition-transform`}></i>
+                <span className="font-medium">{item.label}</span>
+                {isActiveRoute(item.path) && (
+                  <div className="ml-auto w-2 h-2 bg-blue-600 rounded-full"></div>
+                )}
+              </Link>
+            ))}
+          </div>
+
+          {/* Account Section */}
+          <div className="pt-6">
+            <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+              Account
+            </h3>
+            <div className="space-y-1">
+              {accountItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`dashboard-nav-item group ${
+                    isActiveRoute(item.path) ? 'active bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  <i className={`dashboard-nav-icon ${item.icon} ${
+                    isActiveRoute(item.path) ? 'text-blue-600' : item.color
+                  } group-hover:scale-110 transition-transform`}></i>
+                  <span className="font-medium">{item.label}</span>
+                </Link>
+              ))}
+
+              <button
+                onClick={handleLogout}
+                className="dashboard-nav-item group text-gray-600 hover:bg-red-50 hover:text-red-600 w-full text-left"
+              >
+                <i className="dashboard-nav-icon fas fa-sign-out-alt text-red-500 group-hover:scale-110 transition-transform"></i>
+                <span className="font-medium">Logout</span>
               </button>
-            </li>
-          </ul>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <main className="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
-        {/* Navbar */}
-        <nav className="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start">
-          <div className="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
-            <nav>
-              <ol className="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
-                <li className="text-sm leading-normal">
-                  <span className="text-white opacity-50">Pages</span>
-                </li>
-                <li className="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">
-                  {location.pathname.split('/').pop() || 'Dashboard'}
-                </li>
-              </ol>
-              <h6 className="mb-0 font-bold text-white capitalize">
-                {location.pathname.split('/').pop() || 'Dashboard'}
-              </h6>
-            </nav>
-
-            <div className="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
-              <div className="flex items-center md:ml-auto md:pr-4">
-                <div className="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
-                  <span className="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
-                    <i className="fas fa-search"></i>
-                  </span>
-                  <input 
-                    type="text" 
-                    className="pl-9 text-sm focus:shadow-primary-outline ease w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 dark:bg-slate-850 dark:text-white bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow" 
-                    placeholder="Type here..." 
-                  />
-                </div>
-              </div>
-              <ul className="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-                <li className="flex items-center">
-                  <span className="block px-0 py-2 text-sm font-semibold text-white transition-all ease-nav-brand">
-                    <i className="fa fa-user sm:mr-1"></i>
-                    <span className="hidden sm:inline">{user?.name || 'User'}</span>
-                  </span>
-                </li>
-                <li className="flex items-center px-4">
-                  <button onClick={handleLogout} className="p-0 text-sm text-white transition-all ease-nav-brand">
-                    <i className="cursor-pointer fa fa-sign-out-alt"></i>
-                  </button>
-                </li>
-              </ul>
             </div>
           </div>
         </nav>
 
-        {/* Page Content */}
-        <div className="w-full px-6 py-6 mx-auto">
-          {children}
+        {/* Sidebar Footer */}
+        <div className="p-4 border-t border-gray-100">
+          <div className="flex items-center p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold mr-3">
+              {user?.name?.charAt(0) || 'A'}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-gray-900 truncate">
+                {user?.name || 'Admin User'}
+              </p>
+              <p className="text-xs text-gray-500 truncate">
+                {user?.email || 'admin@dashboard.com'}
+              </p>
+            </div>
+          </div>
         </div>
-      </main>
+      </aside>
+
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        ></div>
+      )}
+
+      {/* Main Content */}
+      <div className="dashboard-content">
+        {/* Header */}
+        <header className="dashboard-header shadow-sm">
+          <div className="flex items-center">
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-3"
+            >
+              <i className="fas fa-bars text-lg"></i>
+            </button>
+            
+            <div>
+              <nav className="flex text-sm text-gray-500 mb-1" aria-label="Breadcrumb">
+                <Link to="/dashboard" className="hover:text-gray-700 transition-colors">
+                  Dashboard
+                </Link>
+                {location.pathname !== '/dashboard' && (
+                  <>
+                    <span className="mx-2">/</span>
+                    <span className="text-gray-900 font-medium">{getCurrentPageTitle()}</span>
+                  </>
+                )}
+              </nav>
+              <h1 className="text-2xl font-bold text-gray-900">{getCurrentPageTitle()}</h1>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            {/* Search */}
+            <div className="hidden md:block relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i className="fas fa-search text-gray-400"></i>
+              </div>
+              <input
+                type="text"
+                placeholder="Search..."
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm w-64"
+              />
+            </div>
+
+            {/* Notifications */}
+            <button className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+              <i className="fas fa-bell text-lg"></i>
+              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+
+            {/* User Menu */}
+            <div className="flex items-center space-x-3">
+              <div className="hidden md:block text-right">
+                <p className="text-sm font-medium text-gray-900">
+                  {user?.name || 'Admin User'}
+                </p>
+                <p className="text-xs text-gray-500">
+                  {user?.role || 'Administrator'}
+                </p>
+              </div>
+              <button 
+                onClick={handleLogout}
+                className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-semibold hover:scale-105 transition-transform"
+              >
+                {user?.name?.charAt(0) || 'A'}
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* Page Content */}
+        <main className="dashboard-page custom-scrollbar">
+          {children}
+        </main>
+      </div>
     </div>
   );
 };
