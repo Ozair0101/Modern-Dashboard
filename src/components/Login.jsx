@@ -29,122 +29,176 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container sticky top-0 z-sticky">
-        <div className="flex flex-wrap -mx-3">
-          <div className="w-full max-w-full px-3 flex-0">
-            {/* Navbar */}
-            <nav className="absolute top-0 left-0 right-0 z-30 flex flex-wrap items-center px-4 py-2 m-6 mb-0 shadow-sm rounded-xl bg-white/80 backdrop-blur-2xl backdrop-saturate-200 lg:flex-nowrap lg:justify-start">
-              <div className="flex items-center justify-between w-full p-0 px-6 mx-auto flex-wrap-inherit">
-                <Link className="py-1.75 text-sm mr-4 ml-4 whitespace-nowrap font-bold text-slate-700 lg:ml-0" to="/"> 
-                  Argon Dashboard 2 
-                </Link>
-                <div className="items-center flex-grow transition-all duration-500 lg:flex lg:basis-auto">
-                  <ul className="flex flex-col pl-0 mx-auto mb-0 list-none lg:flex-row xl:ml-auto">
-                    <li>
-                      <Link className="flex items-center px-4 py-2 mr-2 font-normal transition-all ease-in-out duration-250 text-sm text-slate-700 lg:px-2" to="/">
-                        <i className="mr-1 fa fa-home opacity-60"></i>
-                        Home
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="block px-4 py-2 mr-2 font-normal transition-all ease-in-out duration-250 text-sm text-slate-700 lg:px-2" to="/login">
-                        <i className="mr-1 fas fa-key opacity-60"></i>
-                        Sign In
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </nav>
-          </div>
-        </div>
+    <div className="login-container">
+      {/* Background decoration */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-32 w-80 h-80 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full opacity-20 animate-bounce-gentle"></div>
+        <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-gradient-to-tr from-purple-400 to-pink-600 rounded-full opacity-20 animate-bounce-gentle animation-delay-400"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-blue-300 to-green-400 rounded-full opacity-10 animate-bounce-gentle animation-delay-200"></div>
       </div>
 
-      <main className="mt-0 transition-all duration-200 ease-in-out">
-        <section>
-          <div className="relative flex items-center min-h-screen p-0 overflow-hidden bg-center bg-cover">
-            <div className="container z-1">
-              <div className="flex flex-wrap -mx-3">
-                <div className="flex flex-col w-full max-w-full px-3 mx-auto lg:mx-0 shrink-0 md:flex-0 md:w-7/12 lg:w-5/12 xl:w-4/12">
-                  <div className="relative flex flex-col min-w-0 break-words bg-transparent border-0 shadow-none lg:py4 dark:bg-gray-950 rounded-2xl bg-clip-border">
-                    <div className="p-6 pb-0 mb-0">
-                      <h4 className="font-bold">Sign In</h4>
-                      <p className="mb-0">Enter your email and password to sign in</p>
-                      
-                      {/* Demo Credentials Info */}
-                      <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                        <p className="text-sm text-blue-800 font-medium">Demo Credentials:</p>
-                        <p className="text-xs text-blue-600">Email: admin@dashboard.com</p>
-                        <p className="text-xs text-blue-600">Password: admin123</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex-auto p-6">
-                      {error && (
-                        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                          <p className="text-sm text-red-600">{error}</p>
-                        </div>
-                      )}
-                      
-                      <form role="form" onSubmit={handleSubmit}>
-                        <div className="mb-4">
-                          <input 
-                            type="email" 
-                            placeholder="Email" 
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" 
-                          />
-                        </div>
-                        <div className="mb-4">
-                          <input 
-                            type="password" 
-                            placeholder="Password" 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" 
-                          />
-                        </div>
-                        <div className="flex items-center pl-12 mb-0.5 text-left min-h-6">
-                          <input 
-                            id="rememberMe" 
-                            className="mt-0.5 rounded-10 duration-250 ease-in-out after:rounded-circle after:shadow-2xl after:duration-250 checked:after:translate-x-5.3 h-5 relative float-left -ml-12 w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-zinc-700/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-blue-500/95 checked:bg-blue-500/95 checked:bg-none checked:bg-right" 
-                            type="checkbox" 
-                            checked={rememberMe}
-                            onChange={(e) => setRememberMe(e.target.checked)}
-                          />
-                          <label className="ml-2 font-normal cursor-pointer select-none text-sm text-slate-700" htmlFor="rememberMe">
-                            Remember me
-                          </label>
-                        </div>
-                        <div className="text-center">
-                          <button 
-                            type="submit" 
-                            disabled={loading}
-                            className="inline-block w-full px-16 py-3.5 mt-6 mb-0 font-bold leading-normal text-center text-white align-middle transition-all bg-blue-500 border-0 rounded-lg cursor-pointer hover:-translate-y-px active:opacity-85 hover:shadow-xs text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {loading ? 'Signing in...' : 'Sign in'}
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute top-0 right-0 flex-col justify-center hidden w-6/12 h-full max-w-full px-3 pr-0 my-auto text-center flex-0 lg:flex">
-                  <div className="relative flex flex-col justify-center h-full bg-cover px-24 m-4 overflow-hidden bg-gradient-to-tl from-blue-500 to-violet-500 rounded-xl">
-                    <span className="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-blue-500 to-violet-500 opacity-60"></span>
-                    <h4 className="z-20 mt-12 font-bold text-white">"Attention is the new currency"</h4>
-                    <p className="z-20 text-white">The more effortless the writing looks, the more effort the writer actually put into the process.</p>
-                  </div>
-                </div>
+      <div className="relative z-10 w-full max-w-md">
+        {/* Navigation */}
+        <div className="mb-8">
+          <Link 
+            to="/" 
+            className="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors group"
+          >
+            <i className="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+            Back to Home
+          </Link>
+        </div>
+
+        {/* Login Card */}
+        <div className="login-card animate-fade-in-up">
+          {/* Header */}
+          <div className="text-center">
+            <div className="mx-auto h-16 w-16 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white mb-4">
+              <i className="fas fa-shield-alt text-2xl"></i>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
+            <p className="text-gray-600 mb-8">Sign in to access your dashboard</p>
+          </div>
+
+          {/* Demo Credentials */}
+          <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg animate-fade-in-up-delay-200">
+            <div className="flex items-center mb-2">
+              <i className="fas fa-info-circle text-blue-500 mr-2"></i>
+              <span className="text-sm font-medium text-blue-800">Demo Credentials</span>
+            </div>
+            <div className="text-sm text-blue-700 space-y-1">
+              <div className="flex items-center">
+                <i className="fas fa-envelope w-4 mr-2"></i>
+                <code className="bg-blue-100 px-2 py-1 rounded text-xs">admin@dashboard.com</code>
+              </div>
+              <div className="flex items-center">
+                <i className="fas fa-key w-4 mr-2"></i>
+                <code className="bg-blue-100 px-2 py-1 rounded text-xs">admin123</code>
               </div>
             </div>
           </div>
-        </section>
-      </main>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-fade-in-up">
+              <div className="flex items-center">
+                <i className="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+                <span className="text-sm text-red-600">{error}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="animate-fade-in-up-delay-400">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email Address
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i className="fas fa-envelope text-gray-400"></i>
+                </div>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="input pl-10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your email"
+                />
+              </div>
+            </div>
+
+            <div className="animate-fade-in-up-delay-600">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i className="fas fa-lock text-gray-400"></i>
+                </div>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="input pl-10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your password"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between animate-fade-in-up-delay-600">
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors"
+                />
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                  Remember me
+                </label>
+              </div>
+              <a href="#" className="text-sm text-blue-600 hover:text-blue-500 transition-colors">
+                Forgot password?
+              </a>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full btn-primary btn-lg group animate-fade-in-up-delay-600 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
+            >
+              {loading ? (
+                <>
+                  <div className="loading-spinner mr-2"></div>
+                  Signing in...
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-sign-in-alt mr-2 group-hover:scale-110 transition-transform"></i>
+                  Sign In
+                  <i className="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* Footer */}
+          <div className="mt-8 text-center animate-fade-in-up-delay-600">
+            <p className="text-sm text-gray-600">
+              Don't have an account?{' '}
+              <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                Contact Administrator
+              </a>
+            </p>
+          </div>
+        </div>
+
+        {/* Additional Info */}
+        <div className="mt-8 text-center animate-fade-in-up-delay-600">
+          <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
+            <div className="flex items-center">
+              <i className="fas fa-shield-alt text-green-500 mr-1"></i>
+              Secure
+            </div>
+            <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+            <div className="flex items-center">
+              <i className="fas fa-lock text-blue-500 mr-1"></i>
+              Encrypted
+            </div>
+            <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+            <div className="flex items-center">
+              <i className="fas fa-clock text-purple-500 mr-1"></i>
+              24/7 Access
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
