@@ -4,6 +4,25 @@ import DashboardLayout from '../components/DashboardLayout';
 const Billing = () => {
   return (
     <DashboardLayout>
+      {/* Page Header */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Billing & Invoices</h1>
+            <p className="text-gray-600">Manage your billing information and view transaction history</p>
+          </div>
+          <div className="flex space-x-3">
+            <button className="btn-secondary">
+              <i className="fas fa-credit-card mr-2"></i>
+              Add Payment
+            </button>
+            <button className="btn-primary">
+              <i className="fas fa-plus mr-2"></i>
+              New Invoice
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="flex flex-wrap -mx-3">
         <div className="w-full max-w-full px-3 mb-6 md:w-6/12 md:flex-none">
           <div className="relative flex flex-col min-w-0 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
