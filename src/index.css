@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply text-secondary-700 bg-gray-50;
+    line-height: 1.6;
+    margin: 0;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', system-ui, sans-serif;
+    @apply font-semibold text-secondary-900;
+  }
+  
+  #root {
+    @apply min-h-screen;
+  }
+}
+
+/* Component styles */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 border-0 cursor-pointer;
+  }
+  
+  .btn-primary {
+    @apply btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 shadow-sm hover:shadow-md;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-white text-secondary-700 border border-secondary-300 hover:bg-secondary-50 focus:ring-secondary-500 shadow-sm hover:shadow-md;
+  }
+  
+  .btn-accent {
+    @apply btn bg-gradient-to-r from-accent-500 to-primary-600 text-white hover:from-accent-600 hover:to-primary-700 focus:ring-accent-500 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+  
+  .btn-xl {
+    @apply px-8 py-4 text-lg;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-soft border border-gray-100 overflow-hidden;
+  }
+  
+  .card-hover {
+    @apply card transition-all duration-300 hover:shadow-soft-lg hover:-translate-y-1;
+  }
+  
+  .input {
+    @apply w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200;
+  }
+  
+  .input-error {
+    @apply border-red-300 focus:ring-red-500 focus:border-red-500;
+  }
+  
+  .navbar {
+    @apply bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50;
+  }
+  
+  .sidebar {
+    @apply bg-white border-r border-gray-100 shadow-soft;
+  }
+  
+  .gradient-bg {
+    @apply bg-gradient-to-br from-primary-600 via-accent-500 to-primary-800;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent;
+  }
+  
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+}
+
+/* Dashboard specific styles */
+.dashboard-sidebar {
+  @apply fixed left-0 top-0 h-full w-64 bg-white shadow-xl border-r border-gray-100 z-40 transform transition-transform duration-300;
+}
+
+.dashboard-sidebar.mobile-hidden {
+  @apply -translate-x-full lg:translate-x-0;
+}
+
+.dashboard-content {
+  @apply lg:ml-64 min-h-screen bg-gray-50;
+}
+
+.dashboard-header {
+  @apply bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between;
+}
+
+.dashboard-card {
+  @apply bg-white rounded-xl shadow-soft p-6 border border-gray-100 hover:shadow-soft-lg transition-shadow duration-300;
+}
+
+/* Loading animations */
+.loading-spinner {
+  @apply animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600;
+}
+
+.loading-pulse {
+  @apply animate-pulse bg-gray-200 rounded;
+}
