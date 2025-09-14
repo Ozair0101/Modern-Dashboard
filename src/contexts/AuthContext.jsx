@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      console.log('Login attempt:', { email, password }); // Debug log
       // Simulate API call - replace with your actual authentication logic
       if (email === 'admin@dashboard.com' && password === 'admin123') {
         const userData = {
