@@ -22,25 +22,25 @@ const Footer = () => {
     {
       icon: <Github className="w-5 h-5" />,
       name: "GitHub",
-      url: "https://github.com",
+      url: "https://github.com/Ozair0101/",
       color: "hover:text-gray-300"
     },
     {
       icon: <Linkedin className="w-5 h-5" />,
       name: "LinkedIn",
-      url: "https://linkedin.com",
+      url: "https://www.linkedin.com/in/mohammad-ozair-khurami-b7ba7b274/",
       color: "hover:text-blue-400"
     },
     {
       icon: <Twitter className="w-5 h-5" />,
       name: "Twitter",
-      url: "https://twitter.com",
+      url: "https://twitter.com/ozairkhurami",
       color: "hover:text-blue-300"
     },
     {
       icon: <Mail className="w-5 h-5" />,
       name: "Email",
-      url: "mailto:john.doe@example.com",
+      url: "mailto:ozairjan186@gmail.com",
       color: "hover:text-red-400"
     }
   ];
@@ -70,7 +70,7 @@ const Footer = () => {
               className="col-span-1 md:col-span-2"
             >
               <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
-                John Doe
+                Mohammad Ozair Khurami
               </h3>
               <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
                 Full-Stack Developer passionate about creating innovative digital solutions
@@ -131,18 +131,18 @@ const Footer = () => {
               <h4 className="text-lg font-semibold mb-6">Get In Touch</h4>
               <div className="space-y-3 text-gray-400">
                 <a
-                  href="mailto:john.doe@example.com"
+                  href="mailto:ozairjan186@gmail.com"
                   className="block hover:text-white transition-colors duration-200"
                 >
-                  john.doe@example.com
+                  ozairjan186@gmail.com
                 </a>
                 <a
-                  href="tel:+15551234567"
+                  href="tel:+92XXXXXXXXX"
                   className="block hover:text-white transition-colors duration-200"
                 >
-                  +1 (555) 123-4567
+                 +93 781668357
                 </a>
-                <p>New York, NY</p>
+                <p>Afganistan</p>
               </div>
             </motion.div>
           </div>
@@ -158,7 +158,7 @@ const Footer = () => {
         >
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center text-gray-400 text-sm mb-4 md:mb-0">
-              <span>© {new Date().getFullYear()} John Doe. Made with</span>
+              <span>© {new Date().getFullYear()} Mohammad Ozair Khurami. Made with</span>
               <Heart className="w-4 h-4 mx-1 text-red-500 fill-current" />
               <span>and lots of ☕</span>
             </div>
