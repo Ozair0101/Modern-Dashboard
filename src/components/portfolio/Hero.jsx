@@ -114,8 +114,8 @@ const Hero = () => {
             <div className="absolute inset-2 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 p-1 shadow-2xl">
               <div className="w-full h-full rounded-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center overflow-hidden group-hover:shadow-2xl transition-all duration-300">
                 {/* Profile image placeholder - you can replace this with an actual image */}
-                <div className="w-full h-full rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center text-5xl md:text-6xl font-bold text-slate-700 relative overflow-hidden">
-                  <span className="relative z-10">JD</span>
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center text-4xl md:text-5xl font-bold text-slate-700 relative overflow-hidden">
+                  <span className="relative z-10">MO</span>
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
               </div>
@@ -169,7 +169,7 @@ const Hero = () => {
           className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 relative"
         >
           <span className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
-            John Doe
+            Mohammad Ozair Khurami
           </span>
           <motion.div
             className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
@@ -256,7 +256,7 @@ const Hero = () => {
           className="flex justify-center space-x-8 mb-20"
         >
           <motion.a
-            href="https://github.com"
+            href="https://github.com/Ozair0101/"
             target="_blank"
             rel="noopener noreferrer"
             className="group relative p-4 rounded-full border border-white/10 backdrop-blur-sm bg-white/5 text-white/70 hover:text-white hover:border-white/30 transition-all duration-300 hover:shadow-lg hover:shadow-white/10"
@@ -268,7 +268,7 @@ const Hero = () => {
           </motion.a>
           
           <motion.a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/mohammad-ozair-khurami-b7ba7b274/"
             target="_blank"
             rel="noopener noreferrer"
             className="group relative p-4 rounded-full border border-white/10 backdrop-blur-sm bg-white/5 text-white/70 hover:text-white hover:border-blue-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20"
@@ -280,7 +280,7 @@ const Hero = () => {
           </motion.a>
           
           <motion.a
-            href="mailto:john@example.com"
+            href="mailto:ozairjan186@gmail.com"
             className="group relative p-4 rounded-full border border-white/10 backdrop-blur-sm bg-white/5 text-white/70 hover:text-white hover:border-purple-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
             whileHover={{ scale: 1.1, y: -2 }}
             whileTap={{ scale: 0.95 }}
