@@ -160,12 +160,29 @@
     text-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(147, 51, 234, 0.3);
   }
   
+  .text-shadow-xl {
+    text-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  }
+  
+  .text-shadow-glow {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(147, 51, 234, 0.3);
+  }
+  
   /* Gradient text */
   .gradient-text {
     background: linear-gradient(135deg, #60a5fa 0%, #c084fc 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+  
+  .gradient-text-animated {
+    background: linear-gradient(135deg, #60a5fa 0%, #c084fc 50%, #f472b6 100%);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 8s ease infinite;
   }
   
   .gradient-text-animated {
@@ -195,6 +212,14 @@
     @apply backdrop-blur-sm bg-white/5 border border-white/10;
   }
   
+  .glass-strong {
+    @apply backdrop-blur-xl bg-white/20 border border-white/30;
+  }
+  
+  .glass-subtle {
+    @apply backdrop-blur-sm bg-white/5 border border-white/10;
+  }
+  
   /* Additional delay variants */
   .animation-delay-200 {
     animation-delay: 0.2s;
@@ -206,6 +231,29 @@
   
   .animation-delay-600 {
     animation-delay: 0.6s;
+  }
+  
+  /* Additional animations for hero section */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 4s ease-in-out infinite;
+  }
+  
+  .animate-gradient-shift {
+    background-size: 400% 400%;
+    animation: gradient-shift 8s ease infinite;
+  }
+  
+  /* Backdrop blur utilities */
+  .backdrop-blur-xl {
+    backdrop-filter: blur(24px);
+  }
+  
+  .backdrop-blur-2xl {
+    backdrop-filter: blur(40px);
   }
 }
 
