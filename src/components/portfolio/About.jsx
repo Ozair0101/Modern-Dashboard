@@ -4,36 +4,36 @@ import { Download, Award, Coffee, Users } from 'lucide-react';
 
 const About = () => {
   const stats = [
-    { icon: <Award className="w-8 h-8" />, number: "50+", label: "Projects Completed" },
-    { icon: <Users className="w-8 h-8" />, number: "30+", label: "Happy Clients" },
-    { icon: <Coffee className="w-8 h-8" />, number: "1000+", label: "Cups of Coffee" },
-    { icon: <Award className="w-8 h-8" />, number: "5+", label: "Years Experience" }
+    { icon: <Award className="w-8 h-8" />, number: "20+", label: "Projects Completed" },
+    { icon: <Users className="w-8 h-8" />, number: "10+", label: "Happy Clients" },
+    { icon: <Coffee className="w-8 h-8" />, number: "500+", label: "Cups of Coffee" },
+    { icon: <Award className="w-8 h-8" />, number: "3+", label: "Years Learning" }
   ];
 
   const timeline = [
     {
       year: "2024",
-      title: "Senior Full-Stack Developer",
-      company: "Tech Innovations Inc.",
-      description: "Leading development of enterprise-level applications using React, Node.js, and cloud technologies."
+      title: "Full-Stack Developer",
+      company: "Freelance / Personal Projects",
+      description: "Building modern web applications using React, Node.js, and cloud technologies. Focus on creating responsive and user-friendly interfaces."
+    },
+    {
+      year: "2023",
+      title: "Frontend Developer",
+      company: "Learning & Development",
+      description: "Specialized in learning and practicing modern frontend technologies including React, JavaScript, and responsive design principles."
     },
     {
       year: "2022",
-      title: "Frontend Developer",
-      company: "Digital Solutions Co.",
-      description: "Specialized in creating responsive user interfaces and improving user experience for web applications."
+      title: "Web Development Journey",
+      company: "Self-taught",
+      description: "Started my web development journey, learning HTML, CSS, JavaScript, and exploring various frameworks and libraries."
     },
     {
-      year: "2020",
-      title: "Junior Developer",
-      company: "StartUp Ventures",
-      description: "Started my professional journey building modern web applications and learning industry best practices."
-    },
-    {
-      year: "2019",
-      title: "Computer Science Graduate",
-      company: "University of Technology",
-      description: "Graduated with honors, focusing on software engineering and web development technologies."
+      year: "2021",
+      title: "Computer Science Student",
+      company: "University",
+      description: "Pursuing Computer Science education, focusing on programming fundamentals and software development principles."
     }
   ];
 
@@ -65,11 +65,11 @@ const About = () => {
             viewport={{ once: true }}
           >
             <h3 className="text-2xl font-bold text-gray-900 mb-6">
-              Hello! I'm John, a passionate full-stack developer.
+              Hello! I'm Mohammad Ozair Khurami, a passionate full-stack developer.
             </h3>
             <div className="space-y-4 text-gray-600 leading-relaxed">
               <p>
-                I'm a dedicated full-stack developer with over 5 years of experience creating
+                I'm a dedicated full-stack developer with passion for creating
                 innovative digital solutions. My journey in tech started with a curiosity about
                 how websites work, and it has evolved into a passion for building applications
                 that make a difference.
@@ -106,8 +106,8 @@ const About = () => {
           >
             <div className="relative mb-8">
               <div className="w-64 h-64 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-purple-600 p-1">
-                <div className="w-full h-full rounded-full bg-gray-300 flex items-center justify-center text-8xl font-bold text-gray-600">
-                  J
+                <div className="w-full h-full rounded-full bg-gray-300 flex items-center justify-center text-6xl font-bold text-gray-600">
+                  MO
                 </div>
               </div>
               {/* Floating elements */}
