@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import CloudPeakHomepage from './components/CloudPeakHomepage';
+import Portfolio from './components/portfolio/Portfolio';
 import Login from './components/Login';
 import Dashboard from './pages/Dashboard';
 import Tables from './pages/Tables';
@@ -18,7 +18,7 @@ function App() {
       <Router>
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<CloudPeakHomepage />} />
+          <Route path="/" element={<Portfolio />} />
           <Route path="/login" element={<Login />} />
           
           {/* Protected Dashboard Routes */}
