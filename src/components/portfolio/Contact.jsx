@@ -38,19 +38,19 @@ const Contact = () => {
     {
       icon: <Mail className="w-6 h-6" />,
       title: "Email",
-      content: "john.doe@example.com",
-      link: "mailto:john.doe@example.com"
+      content: "ozairjan186@gmail.com",
+      link: "mailto:ozairjan186@gmail.com"
     },
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Phone",
-      content: "+1 (555) 123-4567",
-      link: "tel:+15551234567"
+      content: "+93 781668357",
+      link: "tel:+92781668357"
     },
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Location",
-      content: "New York, NY",
+      content: "Afganistan",
       link: null
     }
   ];
@@ -59,19 +59,19 @@ const Contact = () => {
     {
       icon: <Github className="w-6 h-6" />,
       name: "GitHub",
-      url: "https://github.com",
+      url: "https://github.com/Ozair0101/",
       color: "hover:text-gray-900"
     },
     {
       icon: <Linkedin className="w-6 h-6" />,
       name: "LinkedIn",
-      url: "https://linkedin.com",
+      url: "https://www.linkedin.com/in/mohammad-ozair-khurami-b7ba7b274/",
       color: "hover:text-blue-600"
     },
     {
       icon: <Twitter className="w-6 h-6" />,
       name: "Twitter",
-      url: "https://twitter.com",
+      url: "https://twitter.com/ozairkhurami",
       color: "hover:text-blue-400"
     }
   ];
