@@ -28,14 +28,14 @@ const getComputerImages = () => {
   // In a real project, you would use require.context or import.meta.glob
   // For this example, we'll return a static array of image paths
   return [
-    '/assets/images/computer/pexels-andrew-2312369.jpg',
-    '/assets/images/computer/pexels-designecologist-1779487.jpg',
-    '/assets/images/computer/pexels-elvis-1316342-2528118.jpg',
-    '/assets/images/computer/pexels-kevin-ku-92347-577585.jpg',
-    '/assets/images/computer/pexels-mateusz-dach-99805-2811648.jpg',
-    '/assets/images/computer/pexels-maumascaro-912387.jpg',
-    '/assets/images/computer/pexels-maumascaro-912388.jpg',
-    '/assets/images/computer/pexels-picjumbo-com-55570-196655.jpg',
+    'assets/images/computer/pexels-andrew-2312369.jpg',
+    'assets/images/computer/pexels-designecologist-1779487.jpg',
+    'assets/images/computer/pexels-elvis-1316342-2528118.jpg',
+    'assets/images/computer/pexels-kevin-ku-92347-577585.jpg',
+    'assets/images/computer/pexels-mateusz-dach-99805-2811648.jpg',
+    'assets/images/computer/pexels-maumascaro-912387.jpg',
+    'assets/images/computer/pexels-maumascaro-912388.jpg',
+    'assets/images/computer/pexels-picjumbo-com-55570-196655.jpg',
   ];
 };
 
@@ -46,28 +46,28 @@ const projectsData = [
     title: "E-Commerce Platform",
     description: "A full-featured online shopping experience with real-time inventory management.",
     tags: ["React", "Node.js", "MongoDB"],
-    image: "/assets/images/computer/pexels-designecologist-1779487.jpg"
+    image: "assets/images/computer/pexels-designecologist-1779487.jpg"
   },
   {
     id: 2,
     title: "Health & Fitness App",
     description: "Mobile application for tracking workouts, nutrition, and health metrics.",
     tags: ["React Native", "Firebase", "Redux"],
-    image: "/assets/images/computer/pexels-kevin-ku-92347-577585.jpg"
+    image: "assets/images/computer/pexels-kevin-ku-92347-577585.jpg"
   },
   {
     id: 3,
     title: "Financial Dashboard",
     description: "Real-time analytics and visualization for financial data.",
     tags: ["Vue.js", "D3.js", "Python"],
-    image: "/assets/images/computer/pexels-maumascaro-912387.jpg"
+    image: "assets/images/computer/pexels-maumascaro-912387.jpg"
   },
   {
     id: 4,
     title: "Travel Booking System",
     description: "Comprehensive platform for booking flights, hotels, and activities.",
     tags: ["Angular", "Express", "PostgreSQL"],
-    image: "/assets/images/computer/pexels-thngocbich-1714341.jpg"
+    image: "assets/images/computer/pexels-thngocbich-1714341.jpg"
   }
 ];
 
