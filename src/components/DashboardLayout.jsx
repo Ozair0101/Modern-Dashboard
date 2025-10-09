@@ -15,10 +15,16 @@ const DashboardLayout = ({ children }) => {
 
   const menuItems = [
     { path: '/dashboard', icon: 'fas fa-chart-line', label: 'Dashboard', color: 'text-blue-500' },
+    { path: '/dashboard/users', icon: 'fas fa-users', label: 'Users', color: 'text-blue-500' },
+    { path: '/dashboard/skills', icon: 'fas fa-code', label: 'Skills', color: 'text-green-500' },
+    { path: '/dashboard/projects', icon: 'fas fa-folder', label: 'Projects', color: 'text-purple-500' },
+    { path: '/dashboard/experiences', icon: 'fas fa-briefcase', label: 'Experiences', color: 'text-orange-500' },
+    { path: '/dashboard/educations', icon: 'fas fa-graduation-cap', label: 'Educations', color: 'text-red-500' },
+    { path: '/dashboard/social-links', icon: 'fas fa-link', label: 'Social Links', color: 'text-indigo-500' },
+    { path: '/dashboard/messages', icon: 'fas fa-envelope', label: 'Messages', color: 'text-yellow-500' },
+    { path: '/dashboard/testimonials', icon: 'fas fa-comment', label: 'Testimonials', color: 'text-pink-500' },
     { path: '/dashboard/tables', icon: 'fas fa-table', label: 'Tables', color: 'text-orange-500' },
-    { path: '/dashboard/billing', icon: 'fas fa-credit-card', label: 'Billing', color: 'text-emerald-500' },
     { path: '/dashboard/virtual-reality', icon: 'fas fa-cube', label: 'Virtual Reality', color: 'text-cyan-500' },
-    { path: '/dashboard/rtl', icon: 'fas fa-globe', label: 'RTL', color: 'text-red-500' },
   ];
 
   const accountItems = [
@@ -32,6 +38,23 @@ const DashboardLayout = ({ children }) => {
   const getCurrentPageTitle = () => {
     const path = location.pathname;
     if (path === '/dashboard') return 'Dashboard';
+    
+    // Map paths to titles
+    const pathTitleMap = {
+      '/dashboard/users': 'Users',
+      '/dashboard/skills': 'Skills',
+      '/dashboard/projects': 'Projects',
+      '/dashboard/experiences': 'Experiences',
+      '/dashboard/educations': 'Educations',
+      '/dashboard/social-links': 'Social Links',
+      '/dashboard/messages': 'Messages',
+      '/dashboard/testimonials': 'Testimonials'
+    };
+    
+    if (pathTitleMap[path]) {
+      return pathTitleMap[path];
+    }
+    
     return path.split('/').pop()?.replace('-', ' ').split(' ').map(word => 
       word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ') || 'Dashboard';
@@ -50,8 +73,8 @@ const DashboardLayout = ({ children }) => {
               <i className="fas fa-cube text-white text-sm"></i>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">ModernDash</h2>
-              <p className="text-xs text-gray-500">Admin Panel</p>
+              <h2 className="text-xl font-bold text-gray-900">Portfolio Admin</h2>
+              <p className="text-xs text-gray-500">Management Panel</p>
             </div>
           </Link>
         </div>
