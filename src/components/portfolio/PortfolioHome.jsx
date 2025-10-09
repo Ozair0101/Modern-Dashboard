@@ -5,6 +5,7 @@ import AnimatedImageGrid from './components/AnimatedImageGrid';
 import SkillsSection from './components/SkillsSection';
 import ProjectShowcase from './components/ProjectShowcase';
 import ContactSection from './components/ContactSection';
+import BeautifulFooter from './components/BeautifulFooter';
 
 const PortfolioHome = () => {
   return (
@@ -36,14 +37,8 @@ const PortfolioHome = () => {
         <ContactSection />
       </main>
       
-      {/* Footer */}
-      <footer className="py-10 px-4 sm:px-6 lg:px-8 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto text-center">
-          <p className="text-gray-500">
-            © {new Date().getFullYear()} Mohammad Ozair Khurami. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      {/* Beautiful Footer */}
+      <BeautifulFooter />
     </div>
   );
 };
