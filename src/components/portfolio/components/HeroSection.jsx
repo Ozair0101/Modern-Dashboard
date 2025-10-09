@@ -63,19 +63,25 @@ const HeroSection = () => {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden py-20">
-      {/* Animated background */}
+      {/* Background Image Layer */}
       <div className="absolute inset-0">
-        {/* Gradient backgrounds */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900"></div>
+        <img 
+          src="assets/images/computer/pexels-andrew-2312369.jpg" 
+          alt="Hero Background" 
+          className="w-full h-full object-cover"
+        />
+        
+        {/* Transparent Color Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-purple-900/70 to-gray-900/80"></div>
         
         {/* Animated gradient overlay */}
         <motion.div 
-          className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10"
+          className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20"
           animate={{
             background: [
-              'linear-gradient(to right, rgba(37, 99, 235, 0.1), rgba(139, 92, 246, 0.1), rgba(219, 39, 119, 0.1))',
-              'linear-gradient(to right, rgba(219, 39, 119, 0.1), rgba(37, 99, 235, 0.1), rgba(139, 92, 246, 0.1))',
-              'linear-gradient(to right, rgba(139, 92, 246, 0.1), rgba(219, 39, 119, 0.1), rgba(37, 99, 235, 0.1))'
+              'linear-gradient(to right, rgba(37, 99, 235, 0.2), rgba(139, 92, 246, 0.2), rgba(219, 39, 119, 0.2))',
+              'linear-gradient(to right, rgba(219, 39, 119, 0.2), rgba(37, 99, 235, 0.2), rgba(139, 92, 246, 0.2))',
+              'linear-gradient(to right, rgba(139, 92, 246, 0.2), rgba(219, 39, 119, 0.2), rgba(37, 99, 235, 0.2))'
             ]
           }}
           transition={{
@@ -154,7 +160,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 1.0 }}
-              className="text-lg text-gray-400 mb-10 max-w-2xl leading-relaxed"
+              className="text-lg text-gray-200 mb-10 max-w-2xl leading-relaxed"
             >
               {hero.description}
             </motion.p>
@@ -177,7 +183,7 @@ const HeroSection = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 border-2 border-gray-700 text-white font-semibold rounded-xl hover:border-blue-500 transition-all duration-300"
+                className="px-8 py-4 border-2 border-gray-300 text-white font-semibold rounded-xl hover:border-blue-400 transition-all duration-300"
               >
                 {hero.ctaSecondary}
               </motion.button>
@@ -208,10 +214,12 @@ const HeroSection = () => {
               </motion.div>
               
               {/* Main profile image */}
-              <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden shadow-2xl border-4 border-white/10">
-                <div className="w-full h-full rounded-full bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center">
-                  <span className="text-5xl font-bold text-white">MK</span>
-                </div>
+              <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden shadow-2xl border-4 border-white/20 backdrop-blur-sm">
+                <img 
+                  src="assets/images/profiles/profile_6.png" 
+                  alt="Mohammad Ozair Khurami" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               
               {/* Floating particles around profile */}
