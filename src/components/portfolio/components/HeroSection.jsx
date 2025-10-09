@@ -1,12 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { portfolioData } from '../data/portfolioData';
+import { useInteractiveBackground } from '../hooks/useInteractiveBackground';
 
 const HeroSection = () => {
   const { hero } = portfolioData;
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [typedText, setTypedText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // Interactive background hook
+  const { offset, containerRef } = useInteractiveBackground(0.03, 30);
+
+  // Spring animations for smooth movement
+  const smoothX = useSpring(offset.x, { stiffness: 300, damping: 30 });
+  const smoothY = useSpring(offset.y, { stiffness: 300, damping: 30 });
+
+  // Transform values for multi-layer parallax
+  const backgroundX = useTransform(smoothX, [0, 1], [0, 0.5]);
+  const backgroundY = useTransform(smoothY, [0, 1], [0, 0.5]);
+  
+  const midLayerX = useTransform(smoothX, [0, 1], [0, 0.3]);
+  const midLayerY = useTransform(smoothY, [0, 1], [0, 0.3]);
+  
+  const frontLayerX = useTransform(smoothX, [0, 1], [0, 0.1]);
+  const frontLayerY = useTransform(smoothY, [0, 1], [0, 0.1]);
 
   // Rotating text animation
   const rotatingTexts = [
@@ -62,9 +80,15 @@ const HeroSection = () => {
   );
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden py-20">
-      {/* Background Image Layer */}
-      <div className="absolute inset-0">
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden py-20" ref={containerRef}>
+      {/* Background Image Layer with interactive movement */}
+      <motion.div 
+        className="absolute inset-0"
+        style={{
+          x: backgroundX,
+          y: backgroundY
+        }}
+      >
         <img 
           src="assets/images/computer/pexels-andrew-2312369.jpg" 
           alt="Hero Background" 
@@ -99,7 +123,31 @@ const HeroSection = () => {
         <FloatingParticle size="w-2 h-2" duration={9} delay={4} position={{ top: '30%', right: '10%' }} />
         <FloatingParticle size="w-1 h-1" duration={12} delay={5} position={{ bottom: '30%', left: '20%' }} />
         <FloatingParticle size="w-1.5 h-1.5" duration={11} delay={6} position={{ bottom: '60%', right: '20%' }} />
-      </div>
+      </motion.div>
+
+      {/* Mid-layer elements with parallax */}
+      <motion.div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          x: midLayerX,
+          y: midLayerY
+        }}
+      >
+        {/* Additional decorative elements can be added here */}
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blue-500/10 blur-3xl"></div>
+        <div className="absolute bottom-1/3 right-1/3 w-48 h-48 rounded-full bg-purple-500/10 blur-3xl"></div>
+      </motion.div>
+
+      {/* Front layer elements with parallax */}
+      <motion.div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          x: frontLayerX,
+          y: frontLayerY
+        }}
+      >
+        {/* Additional decorative elements can be added here */}
+      </motion.div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -216,7 +264,7 @@ const HeroSection = () => {
               {/* Main profile image */}
               <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden shadow-2xl border-4 border-white/20 backdrop-blur-sm">
                 <img 
-                  src="assets/images/profiles/profile_6.png" 
+                  src="assets/images/profiles/ozair1.jpg" 
                   alt="Mohammad Ozair Khurami" 
                   className="w-full h-full object-cover"
                 />
@@ -252,6 +300,27 @@ const HeroSection = () => {
           </motion.div>
         </div>
       </div>
+      
+      {/* Visual indicator that background is interactive */}
+      <motion.div 
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-gray-400 text-sm flex items-center gap-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2 }}
+      >
+        <motion.div 
+          className="w-2 h-2 rounded-full bg-blue-400"
+          animate={{ 
+            scale: [1, 1.5, 1],
+            opacity: [0.5, 1, 0.5]
+          }}
+          transition={{ 
+            duration: 2,
+            repeat: Infinity 
+          }}
+        />
+        <span>Move your cursor or drag to interact with background</span>
+      </motion.div>
     </section>
   );
 };
