@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import PortfolioHome from './components/portfolio/PortfolioHome';
+import Portfolio3D from './components/portfolio/Portfolio3D';
 import Login from './components/Login';
 import Dashboard from './pages/Dashboard';
 import Tables from './pages/Tables';
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<PortfolioHome />} />
+          <Route path="/3d" element={<Portfolio3D />} />
           <Route path="/login" element={<Login />} />
           
           {/* Protected Dashboard Routes */}
