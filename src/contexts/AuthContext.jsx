@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import api from '../api/api';
 
 const AuthContext = createContext();
 
@@ -30,37 +31,48 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       console.log('Login attempt:', { email, password }); // Debug log
-      // Simulate API call - replace with your actual authentication logic
-      if (email === 'admin@dashboard.com' && password === 'admin123') {
-        const userData = {
-          id: 1,
-          email: email,
-          name: 'Dashboard Admin',
-          role: 'admin'
-        };
-        
-        const token = 'mock-jwt-token-' + Date.now();
+      
+      // Call the backend login API
+      const response = await api.post('/login', { email, password });
+      
+      if (response.data.success) {
+        const { user, token } = response.data;
         
         localStorage.setItem('authToken', token);
-        localStorage.setItem('userData', JSON.stringify(userData));
+        localStorage.setItem('userData', JSON.stringify(user));
         
         setIsAuthenticated(true);
-        setUser(userData);
+        setUser(user);
         
         return { success: true };
       } else {
-        throw new Error('Invalid email or password');
+        throw new Error(response.data.message || 'Login failed');
       }
     } catch (error) {
-      return { success: false, error: error.message };
+      console.error('Login error:', error);
+      return { success: false, error: error.response?.data?.message || error.message || 'Invalid email or password' };
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
-    setIsAuthenticated(false);
-    setUser(null);
+  const logout = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        // Call the backend logout API
+        await api.post('/logout', {}, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userData');
+      setIsAuthenticated(false);
+      setUser(null);
+    }
   };
 
   const value = {
