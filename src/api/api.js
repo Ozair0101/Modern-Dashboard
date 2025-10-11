@@ -25,12 +25,19 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Handle unauthorized access
       localStorage.removeItem('authToken');
+      localStorage.removeItem('userData');
       window.location.href = '/login';
     }
     return Promise.reject(error);
   }
 );
 
+// Auth API functions
+export const login = (credentials) => api.post('/login', credentials);
+export const logout = () => api.post('/logout');
+export const getAuthUser = () => api.get('/user');
+
+// Generic CRUD functions
 export const getAll = (resource) => api.get(`/${resource}`);
 export const getOne = (resource, id) => api.get(`/${resource}/${id}`);
 export const create = (resource, data) => api.post(`/${resource}`, data);
