@@ -71,8 +71,8 @@ const Login = () => {
               <button 
                 type="button"
                 onClick={() => {
-                  setEmail('admin@dashboard.com');
-                  setPassword('admin123');
+                  setEmail('dev@dev.com');
+                  setPassword('dev');
                 }}
                 className="px-3 py-1 text-xs bg-primary-500 text-white rounded hover:bg-primary-600 transition-colors"
               >
@@ -82,11 +82,11 @@ const Login = () => {
             <div className="text-sm text-white/80 space-y-1">
               <div className="flex items-center">
                 <i className="fas fa-envelope w-4 mr-2"></i>
-                <code className="bg-theme-light/60 px-2 py-1 rounded text-xs text-white">admin@dashboard.com</code>
+                <code className="bg-theme-light/60 px-2 py-1 rounded text-xs text-white">dev@dev.com</code>
               </div>
               <div className="flex items-center">
                 <i className="fas fa-key w-4 mr-2"></i>
-                <code className="bg-theme-light/60 px-2 py-1 rounded text-xs text-white">admin123</code>
+                <code className="bg-theme-light/60 px-2 py-1 rounded text-xs text-white">dev</code>
               </div>
             </div>
           </div>
