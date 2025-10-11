@@ -36,20 +36,23 @@ const Skills = () => {
     try {
       setLoading(true);
       const response = await getSkills();
-      setSkills(response.data);
+      // Handle paginated response - extract data array
+      const skillsData = response.data.data || response.data || [];
+      setSkills(skillsData);
     } catch (error) {
       toast.error('Failed to fetch skills');
       console.error('Error fetching skills:', error);
+      setSkills([]); // Set to empty array on error
     } finally {
       setLoading(false);
     }
   };
 
   // Filter skills based on search term
-  const filteredSkills = skills.filter(skill =>
-    skill.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  const filteredSkills = skills && Array.isArray(skills) ? skills.filter(skill =>
+    (skill.name && skill.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (skill.category && skill.category.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  ) : [];
 
   // Handle form input changes
   const handleInputChange = (e) => {
