@@ -40,20 +40,23 @@ const Projects = () => {
     try {
       setLoading(true);
       const response = await getProjects();
-      setProjects(response.data);
+      // Handle paginated response - extract data array
+      const projectsData = response.data.data || response.data || [];
+      setProjects(projectsData);
     } catch (error) {
       toast.error('Failed to fetch projects');
       console.error('Error fetching projects:', error);
+      setProjects([]); // Set to empty array on error
     } finally {
       setLoading(false);
     }
   };
 
   // Filter projects based on search term
-  const filteredProjects = projects.filter(project =>
-    project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.technologies.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProjects = projects && Array.isArray(projects) ? projects.filter(project =>
+    (project.title && project.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (project.technologies && project.technologies.toLowerCase().includes(searchTerm.toLowerCase()))
+  ) : [];
 
   // Handle form input changes
   const handleInputChange = (e) => {
