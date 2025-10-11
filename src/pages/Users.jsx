@@ -36,20 +36,23 @@ const Users = () => {
     try {
       setLoading(true);
       const response = await getUsers();
-      setUsers(response.data);
+      // Handle paginated response - extract data array
+      const usersData = response.data.data || response.data || [];
+      setUsers(usersData);
     } catch (error) {
       toast.error('Failed to fetch users');
       console.error('Error fetching users:', error);
+      setUsers([]); // Set to empty array on error
     } finally {
       setLoading(false);
     }
   };
 
   // Filter users based on search term
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredUsers = users && Array.isArray(users) ? users.filter(user =>
+    (user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+  ) : [];
 
   // Handle form input changes
   const handleInputChange = (e) => {
