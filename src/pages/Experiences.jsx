@@ -39,20 +39,23 @@ const Experiences = () => {
     try {
       setLoading(true);
       const response = await getExperiences();
-      setExperiences(response.data);
+      // Handle paginated response - extract data array
+      const experiencesData = response.data.data || response.data || [];
+      setExperiences(experiencesData);
     } catch (error) {
       toast.error('Failed to fetch experiences');
       console.error('Error fetching experiences:', error);
+      setExperiences([]); // Set to empty array on error
     } finally {
       setLoading(false);
     }
   };
 
   // Filter experiences based on search term
-  const filteredExperiences = experiences.filter(exp =>
-    exp.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    exp.position.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredExperiences = experiences && Array.isArray(experiences) ? experiences.filter(exp =>
+    (exp.company && exp.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (exp.position && exp.position.toLowerCase().includes(searchTerm.toLowerCase()))
+  ) : [];
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -177,8 +180,9 @@ const Experiences = () => {
       header: 'Duration',
       accessor: 'start_date',
       render: (_, row) => {
+        if (!row.start_date) return 'N/A';
         const start = new Date(row.start_date).getFullYear();
-        const end = row.currently_working ? 'Present' : new Date(row.end_date).getFullYear();
+        const end = row.currently_working ? 'Present' : (row.end_date ? new Date(row.end_date).getFullYear() : 'N/A');
         return `${start} - ${end}`;
       }
     },
