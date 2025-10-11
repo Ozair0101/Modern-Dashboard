@@ -40,21 +40,24 @@ const Educations = () => {
     try {
       setLoading(true);
       const response = await getEducations();
-      setEducations(response.data);
+      // Handle paginated response - extract data array
+      const educationsData = response.data.data || response.data || [];
+      setEducations(educationsData);
     } catch (error) {
       toast.error('Failed to fetch educations');
       console.error('Error fetching educations:', error);
+      setEducations([]); // Set to empty array on error
     } finally {
       setLoading(false);
     }
   };
 
   // Filter educations based on search term
-  const filteredEducations = educations.filter(edu =>
-    edu.institution.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    edu.degree.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    edu.field_of_study.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredEducations = educations && Array.isArray(educations) ? educations.filter(edu =>
+    (edu.institution && edu.institution.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (edu.degree && edu.degree.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (edu.field_of_study && edu.field_of_study.toLowerCase().includes(searchTerm.toLowerCase()))
+  ) : [];
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -185,6 +188,7 @@ const Educations = () => {
       header: 'Duration',
       accessor: 'start_date',
       render: (_, row) => {
+        if (!row.start_date) return 'N/A';
         const start = new Date(row.start_date).getFullYear();
         const end = row.end_date ? new Date(row.end_date).getFullYear() : 'Present';
         return `${start} - ${end}`;
