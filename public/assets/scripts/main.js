@@ -23,94 +23,128 @@
 
   // ####################### Header Menu #########################
   const allPages = document.getElementById("all-pages");
-  allPages.addEventListener("click", () => {
-    const menu = document.getElementById("all-pages-dropdown");
-    menu.classList.toggle("active");
-  });
+  if (allPages) {
+    allPages.addEventListener("click", () => {
+      const menu = document.getElementById("all-pages-dropdown");
+      if (menu) {
+        menu.classList.toggle("active");
+      }
+    });
+  }
 
   // ####################### Brands Slider #########################
-  new Swiper(".is-brands-slider", {
-    centeredSlides: true,
-    speed: 3000,
-    autoplay: {
-      delay: 1,
-    },
-    loop: true,
-    slidesPerView: "auto",
-    allowTouchMove: true,
-    disableOnInteraction: true,
-  });
+  const brandsSlider = document.querySelector(".is-brands-slider");
+  if (brandsSlider) {
+    new Swiper(".is-brands-slider", {
+      centeredSlides: true,
+      speed: 3000,
+      autoplay: {
+        delay: 1,
+      },
+      loop: true,
+      slidesPerView: "auto",
+      allowTouchMove: true,
+      disableOnInteraction: true,
+    });
+  }
 
   // ########################## Tab ##########################
   function setActiveTab(tabGroup, tabName) {
     const tabsNav = tabGroup.querySelector("[data-tab-nav]");
     const tabsContent = tabGroup.querySelector("[data-tab-content]");
 
-    tabsNav.querySelectorAll("[data-tab]").forEach((tabNavItem) => {
-      tabNavItem.classList.remove("active");
-    });
-    tabsContent.querySelectorAll("[data-tab-panel]").forEach((tabPane) => {
-      tabPane.classList.remove("active");
-    });
-
-    const selectedTabNavItem = tabsNav.querySelector(`[data-tab="${tabName}"]`);
-    selectedTabNavItem.classList.add("active");
-    const selectedTabPane = tabsContent.querySelector(
-      `[data-tab-panel="${tabName}"]`,
-    );
-    selectedTabPane.classList.add("active");
-  }
-  const tabGroups = document.querySelectorAll("[data-tab-group]");
-  tabGroups.forEach((tabGroup) => {
-    const tabsNav = tabGroup.querySelector("[data-tab-nav]");
-    const tabsNavItem = tabsNav.querySelectorAll("[data-tab]");
-    const activeTabName = tabsNavItem[0].getAttribute("data-tab");
-
-    setActiveTab(tabGroup, activeTabName);
-
-    tabsNavItem.forEach((tabNavItem) => {
-      tabNavItem.addEventListener("click", () => {
-        const tabName = tabNavItem.dataset.tab;
-        setActiveTab(tabGroup, tabName);
+    if (tabsNav) {
+      tabsNav.querySelectorAll("[data-tab]").forEach((tabNavItem) => {
+        tabNavItem.classList.remove("active");
       });
-    });
-  });
+    }
+    
+    if (tabsContent) {
+      tabsContent.querySelectorAll("[data-tab-panel]").forEach((tabPane) => {
+        tabPane.classList.remove("active");
+      });
+    }
 
-  const tablist = document.querySelectorAll("[data-tab-nav] [data-tab]");
-  function tabsHandler(event) {
-    let index = Array.from(tablist).indexOf(this);
-    let numbTabs = tablist.length;
-    let nextId;
-    if (numbTabs > 1) {
-      if (event.key === "ArrowRight") {
-        nextId = tablist[(index + 1) % numbTabs];
-        if (index === numbTabs - 1) {
-          nextId = tablist[0];
-        }
-        nextId.focus();
-        nextId.click();
+    if (tabsNav) {
+      const selectedTabNavItem = tabsNav.querySelector(`[data-tab="${tabName}"]`);
+      if (selectedTabNavItem) {
+        selectedTabNavItem.classList.add("active");
       }
-      if (event.key === "ArrowLeft") {
-        nextId = tablist[(index - 1 + numbTabs) % numbTabs];
-        if (index === 0) {
-          nextId = tablist[numbTabs - 1];
-        }
-        nextId.focus();
-        nextId.click();
+    }
+    
+    if (tabsContent) {
+      const selectedTabPane = tabsContent.querySelector(
+        `[data-tab-panel="${tabName}"]`
+      );
+      if (selectedTabPane) {
+        selectedTabPane.classList.add("active");
       }
     }
   }
+  
+  const tabGroups = document.querySelectorAll("[data-tab-group]");
+  tabGroups.forEach((tabGroup) => {
+    const tabsNav = tabGroup.querySelector("[data-tab-nav]");
+    if (tabsNav) {
+      const tabsNavItem = tabsNav.querySelectorAll("[data-tab]");
+      if (tabsNavItem.length > 0) {
+        const activeTabName = tabsNavItem[0].getAttribute("data-tab");
 
-  tablist.forEach(function (tab) {
-    tab.addEventListener("keydown", tabsHandler);
+        setActiveTab(tabGroup, activeTabName);
+
+        tabsNavItem.forEach((tabNavItem) => {
+          tabNavItem.addEventListener("click", () => {
+            const tabName = tabNavItem.dataset.tab;
+            setActiveTab(tabGroup, tabName);
+          });
+        });
+      }
+    }
   });
+
+  const tablist = document.querySelectorAll("[data-tab-nav] [data-tab]");
+  if (tablist.length > 0) {
+    function tabsHandler(event) {
+      let index = Array.from(tablist).indexOf(this);
+      let numbTabs = tablist.length;
+      let nextId;
+      if (numbTabs > 1) {
+        if (event.key === "ArrowRight") {
+          nextId = tablist[(index + 1) % numbTabs];
+          if (index === numbTabs - 1) {
+            nextId = tablist[0];
+          }
+          if (nextId) {
+            nextId.focus();
+            nextId.click();
+          }
+        }
+        if (event.key === "ArrowLeft") {
+          nextId = tablist[(index - 1 + numbTabs) % numbTabs];
+          if (index === 0) {
+            nextId = tablist[numbTabs - 1];
+          }
+          if (nextId) {
+            nextId.focus();
+            nextId.click();
+          }
+        }
+      }
+    }
+
+    tablist.forEach(function (tab) {
+      tab.addEventListener("keydown", tabsHandler);
+    });
+  }
 
   // ########################## Accordion ##########################
   const accordion = document.querySelectorAll("[data-accordion]");
   accordion.forEach((header) => {
     header.addEventListener("click", () => {
       const accordionItem = header.parentElement;
-      accordionItem.classList.toggle("active");
+      if (accordionItem) {
+        accordionItem.classList.toggle("active");
+      }
     });
   });
 
@@ -123,8 +157,8 @@
       return null;
     }
     const overlay = modal.querySelector("[data-modal-overlay]");
-    modal.style.display = "block";
-    overlay.style.display = "block";
+    if (modal) modal.style.display = "block";
+    if (overlay) overlay.style.display = "block";
   }
 
   function closeModal(modal) {
@@ -132,8 +166,8 @@
       return null;
     }
     const overlay = modal.querySelector("[data-modal-overlay]");
-    modal.style.display = "none";
-    overlay.style.display = "none";
+    if (modal) modal.style.display = "none";
+    if (overlay) overlay.style.display = "none";
   }
 
   openModalButtons.forEach((button) => {
@@ -165,16 +199,16 @@
       console.log("🪲 :", isYearly);
       if (isYearly) {
         // Switch to yearly
-        monthlyText.style.color = "#9ea3bf";
-        yearlyText.style.color = "#ffffff";
-        monthlyPrices.style.display = "none";
-        yearlyPrices.style.display = "block";
+        if (monthlyText) monthlyText.style.color = "#9ea3bf";
+        if (yearlyText) yearlyText.style.color = "#ffffff";
+        if (monthlyPrices) monthlyPrices.style.display = "none";
+        if (yearlyPrices) yearlyPrices.style.display = "block";
       } else {
         // Switch to monthly
-        monthlyText.style.color = "#ffffff";
-        yearlyText.style.color = "#9ea3bf";
-        monthlyPrices.style.display = "block";
-        yearlyPrices.style.display = "none";
+        if (monthlyText) monthlyText.style.color = "#ffffff";
+        if (yearlyText) yearlyText.style.color = "#9ea3bf";
+        if (monthlyPrices) monthlyPrices.style.display = "block";
+        if (yearlyPrices) yearlyPrices.style.display = "none";
       }
     }
 
@@ -196,7 +230,9 @@
         filterButtons.forEach((btn) => btn.classList.remove("active"));
 
         // Add 'active' class to the clicked button
-        e.currentTarget.classList.add("active");
+        if (e.currentTarget) {
+          e.currentTarget.classList.add("active");
+        }
 
         const filter = e.currentTarget.getAttribute("data-filter");
         if (filter === "all") {
@@ -204,7 +240,7 @@
         } else {
           shuffle.filter((element) => {
             const groups = element.getAttribute("data-groups");
-            return groups.includes(filter);
+            return groups && groups.includes(filter);
           });
         }
       });
