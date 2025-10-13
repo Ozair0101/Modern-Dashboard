@@ -37,6 +37,10 @@ export const login = (credentials) => api.post('/login', credentials);
 export const logout = () => api.post('/logout');
 export const getAuthUser = () => api.get('/user');
 
+// Profile API functions
+export const getProfile = () => api.get('/profile');
+export const updateProfile = (data) => api.put('/profile', data);
+
 // Generic CRUD functions
 export const getAll = (resource) => api.get(`/${resource}`);
 export const getOne = (resource, id) => api.get(`/${resource}/${id}`);
