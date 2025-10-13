@@ -20,7 +20,7 @@ const Educations = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEducation, setCurrentEducation] = useState(null);
   const [formData, setFormData] = useState({
-    institution: '',
+    school: '', // Changed from 'institution' to 'school' to match backend
     degree: '',
     field_of_study: '',
     start_date: '',
@@ -54,7 +54,7 @@ const Educations = () => {
 
   // Filter educations based on search term
   const filteredEducations = educations && Array.isArray(educations) ? educations.filter(edu =>
-    (edu.institution && edu.institution.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (edu.school && edu.school.toLowerCase().includes(searchTerm.toLowerCase())) || // Changed from 'institution' to 'school'
     (edu.degree && edu.degree.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (edu.field_of_study && edu.field_of_study.toLowerCase().includes(searchTerm.toLowerCase()))
   ) : [];
@@ -80,8 +80,8 @@ const Educations = () => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.institution.trim()) {
-      newErrors.institution = 'Institution name is required';
+    if (!formData.school.trim()) { // Changed from 'institution' to 'school'
+      newErrors.school = 'School name is required'; // Changed from 'institution' to 'school'
     }
     
     if (!formData.degree.trim()) {
@@ -129,7 +129,7 @@ const Educations = () => {
   const handleEdit = (education) => {
     setCurrentEducation(education);
     setFormData({
-      institution: education.institution || '',
+      school: education.school || '', // Changed from 'institution' to 'school'
       degree: education.degree || '',
       field_of_study: education.field_of_study || '',
       start_date: education.start_date || '',
@@ -142,7 +142,7 @@ const Educations = () => {
 
   // Handle delete education
   const handleDelete = async (education) => {
-    if (window.confirm(`Are you sure you want to delete education at "${education.institution}"?`)) {
+    if (window.confirm(`Are you sure you want to delete education at "${education.school}"?`)) { // Changed from 'institution' to 'school'
       try {
         await deleteEducation(education.id);
         toast.success('Education deleted successfully');
@@ -158,7 +158,7 @@ const Educations = () => {
   const handleAdd = () => {
     setCurrentEducation(null);
     setFormData({
-      institution: '',
+      school: '', // Changed from 'institution' to 'school'
       degree: '',
       field_of_study: '',
       start_date: '',
@@ -173,8 +173,8 @@ const Educations = () => {
   // Columns configuration for the table
   const columns = [
     {
-      header: 'Institution',
-      accessor: 'institution'
+      header: 'School', // Changed from 'Institution' to 'School'
+      accessor: 'school' // Changed from 'institution' to 'school'
     },
     {
       header: 'Degree',
@@ -261,12 +261,12 @@ const Educations = () => {
         >
           <div className="space-y-4">
             <FormField
-              label="Institution"
-              name="institution"
-              value={formData.institution}
+              label="School" // Changed from 'Institution' to 'School'
+              name="school" // Changed from 'institution' to 'school'
+              value={formData.school} // Changed from 'institution' to 'school'
               onChange={handleInputChange}
-              error={errors.institution}
-              placeholder="Enter institution name"
+              error={errors.school} // Changed from 'institution' to 'school'
+              placeholder="Enter school name" // Changed from 'institution' to 'school'
               required
             />
             
