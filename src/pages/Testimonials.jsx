@@ -39,21 +39,24 @@ const Testimonials = () => {
     try {
       setLoading(true);
       const response = await getTestimonials();
-      setTestimonials(response.data);
+      // Handle paginated response - extract data array
+      const testimonialsData = response.data.data || response.data || [];
+      setTestimonials(testimonialsData);
     } catch (error) {
       toast.error('Failed to fetch testimonials');
       console.error('Error fetching testimonials:', error);
+      setTestimonials([]); // Set to empty array on error
     } finally {
       setLoading(false);
     }
   };
 
   // Filter testimonials based on search term
-  const filteredTestimonials = testimonials.filter(testimonial =>
-    testimonial.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    testimonial.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    testimonial.position.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredTestimonials = testimonials && Array.isArray(testimonials) ? testimonials.filter(testimonial =>
+    (testimonial.name && testimonial.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (testimonial.company && testimonial.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (testimonial.position && testimonial.position.toLowerCase().includes(searchTerm.toLowerCase()))
+  ) : [];
 
   // Handle form input changes
   const handleInputChange = (e) => {
