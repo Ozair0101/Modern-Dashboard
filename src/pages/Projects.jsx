@@ -115,35 +115,33 @@ const Projects = () => {
     setIsSubmitting(true);
     
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('title', formData.title);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('technologies', formData.technologies);
-      formDataToSend.append('demo_link', formData.demo_link || '');
-      formDataToSend.append('github_link', formData.github_link || '');
-      formDataToSend.append('featured', formData.featured);
+      // Prepare data - convert technologies string to array
+      const technologiesArray = formData.technologies
+        .split(',')
+        .map(tech => tech.trim())
+        .filter(tech => tech.length > 0);
       
-      if (formData.image) {
-        formDataToSend.append('image', formData.image);
-      }
-      
-      // If editing, include _method for PUT request
-      if (currentProject) {
-        formDataToSend.append('_method', 'PUT');
-      }
+      const dataToSend = {
+        title: formData.title,
+        description: formData.description,
+        technologies: technologiesArray,
+        demo_link: formData.demo_link || '',
+        github_link: formData.github_link || '',
+        featured: formData.featured
+      };
       
       if (currentProject) {
-        await updateProject(currentProject.id, formDataToSend);
+        await updateProject(currentProject.id, dataToSend);
         toast.success('Project updated successfully');
       } else {
-        await createProject(formDataToSend);
+        await createProject(dataToSend);
         toast.success('Project created successfully');
       }
       
       setIsModalOpen(false);
       fetchProjects();
     } catch (error) {
-      toast.error('Failed to save project');
+      toast.error('Failed to save project: ' + (error.response?.data?.message || error.message));
       console.error('Error saving project:', error);
     } finally {
       setIsSubmitting(false);
