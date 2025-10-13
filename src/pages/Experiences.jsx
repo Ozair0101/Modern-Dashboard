@@ -21,7 +21,7 @@ const Experiences = () => {
   const [currentExperience, setCurrentExperience] = useState(null);
   const [formData, setFormData] = useState({
     company: '',
-    position: '',
+    role: '', // Changed from 'position' to 'role' to match backend
     description: '',
     start_date: '',
     end_date: '',
@@ -54,7 +54,7 @@ const Experiences = () => {
   // Filter experiences based on search term
   const filteredExperiences = experiences && Array.isArray(experiences) ? experiences.filter(exp =>
     (exp.company && exp.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (exp.position && exp.position.toLowerCase().includes(searchTerm.toLowerCase()))
+    (exp.role && exp.role.toLowerCase().includes(searchTerm.toLowerCase())) // Changed from 'position' to 'role'
   ) : [];
 
   // Handle form input changes
@@ -82,8 +82,8 @@ const Experiences = () => {
       newErrors.company = 'Company name is required';
     }
     
-    if (!formData.position.trim()) {
-      newErrors.position = 'Position is required';
+    if (!formData.role.trim()) { // Changed from 'position' to 'role'
+      newErrors.role = 'Role is required'; // Changed from 'position' to 'role'
     }
     
     if (!formData.start_date) {
@@ -128,7 +128,7 @@ const Experiences = () => {
     setCurrentExperience(experience);
     setFormData({
       company: experience.company || '',
-      position: experience.position || '',
+      role: experience.role || '', // Changed from 'position' to 'role'
       description: experience.description || '',
       start_date: experience.start_date || '',
       end_date: experience.end_date || '',
@@ -156,7 +156,7 @@ const Experiences = () => {
     setCurrentExperience(null);
     setFormData({
       company: '',
-      position: '',
+      role: '', // Changed from 'position' to 'role'
       description: '',
       start_date: '',
       end_date: '',
@@ -173,8 +173,8 @@ const Experiences = () => {
       accessor: 'company'
     },
     {
-      header: 'Position',
-      accessor: 'position'
+      header: 'Role', // Changed from 'Position' to 'Role'
+      accessor: 'role' // Changed from 'position' to 'role'
     },
     {
       header: 'Duration',
@@ -272,12 +272,12 @@ const Experiences = () => {
             />
             
             <FormField
-              label="Position"
-              name="position"
-              value={formData.position}
+              label="Role" // Changed from 'Position' to 'Role'
+              name="role" // Changed from 'position' to 'role'
+              value={formData.role} // Changed from 'position' to 'role'
               onChange={handleInputChange}
-              error={errors.position}
-              placeholder="Enter position title"
+              error={errors.role} // Changed from 'position' to 'role'
+              placeholder="Enter role title" // Changed from 'position' to 'role'
               required
             />
             
