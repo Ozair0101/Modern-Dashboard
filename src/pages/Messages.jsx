@@ -28,21 +28,24 @@ const Messages = () => {
     try {
       setLoading(true);
       const response = await getMessages();
-      setMessages(response.data);
+      // Handle paginated response - extract data array
+      const messagesData = response.data.data || response.data || [];
+      setMessages(messagesData);
     } catch (error) {
       toast.error('Failed to fetch messages');
       console.error('Error fetching messages:', error);
+      setMessages([]); // Set to empty array on error
     } finally {
       setLoading(false);
     }
   };
 
   // Filter messages based on search term
-  const filteredMessages = messages.filter(msg =>
-    msg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    msg.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    msg.subject.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredMessages = messages && Array.isArray(messages) ? messages.filter(msg =>
+    (msg.name && msg.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (msg.email && msg.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (msg.subject && msg.subject.toLowerCase().includes(searchTerm.toLowerCase()))
+  ) : [];
 
   // Handle view message
   const handleView = async (message) => {
@@ -75,6 +78,7 @@ const Messages = () => {
 
   // Format date
   const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
