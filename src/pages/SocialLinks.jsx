@@ -36,20 +36,23 @@ const SocialLinks = () => {
     try {
       setLoading(true);
       const response = await getSocialLinks();
-      setSocialLinks(response.data);
+      // Handle paginated response - extract data array
+      const socialLinksData = response.data.data || response.data || [];
+      setSocialLinks(socialLinksData);
     } catch (error) {
       toast.error('Failed to fetch social links');
       console.error('Error fetching social links:', error);
+      setSocialLinks([]); // Set to empty array on error
     } finally {
       setLoading(false);
     }
   };
 
   // Filter social links based on search term
-  const filteredSocialLinks = socialLinks.filter(link =>
-    link.platform.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    link.url.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredSocialLinks = socialLinks && Array.isArray(socialLinks) ? socialLinks.filter(link =>
+    (link.platform && link.platform.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (link.url && link.url.toLowerCase().includes(searchTerm.toLowerCase()))
+  ) : [];
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -162,15 +165,19 @@ const SocialLinks = () => {
       header: 'URL',
       accessor: 'url',
       render: (value) => (
-        <a 
-          href={value} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:text-blue-800 flex items-center"
-        >
-          <LinkIcon size={16} className="mr-1" />
-          Visit
-        </a>
+        value ? (
+          <a 
+            href={value} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800 flex items-center"
+          >
+            <LinkIcon size={16} className="mr-1" />
+            Visit
+          </a>
+        ) : (
+          <span className="text-gray-400">N/A</span>
+        )
       )
     },
     {
