@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Search, Star } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 import { toast } from 'react-toastify';
 import DashboardLayout from '../components/DashboardLayout';
 import Table from '../components/Table';
@@ -21,11 +21,9 @@ const Testimonials = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
-    role: '', // Changed from 'position' to 'role' to match backend
-    company: '',
-    feedback: '', // Changed from 'content' to 'feedback' to match backend
-    rating: 5,
-    featured: false
+    role: '',
+    feedback: '',
+    image: ''
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,17 +52,16 @@ const Testimonials = () => {
   // Filter testimonials based on search term
   const filteredTestimonials = testimonials && Array.isArray(testimonials) ? testimonials.filter(testimonial =>
     (testimonial.name && testimonial.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (testimonial.company && testimonial.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (testimonial.role && testimonial.role.toLowerCase().includes(searchTerm.toLowerCase())) // Changed from 'position' to 'role'
+    (testimonial.role && testimonial.role.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (testimonial.feedback && testimonial.feedback.toLowerCase().includes(searchTerm.toLowerCase()))
   ) : [];
 
   // Handle form input changes
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : 
-              type === 'number' ? parseInt(value) : value
+      [name]: value
     }));
     
     // Clear error when user starts typing
@@ -84,12 +81,8 @@ const Testimonials = () => {
       newErrors.name = 'Name is required';
     }
     
-    if (!formData.feedback.trim()) { // Changed from 'content' to 'feedback'
-      newErrors.feedback = 'Testimonial feedback is required'; // Changed from 'content' to 'feedback'
-    }
-    
-    if (formData.rating < 1 || formData.rating > 5) {
-      newErrors.rating = 'Rating must be between 1 and 5';
+    if (!formData.feedback.trim()) {
+      newErrors.feedback = 'Testimonial feedback is required';
     }
     
     setErrors(newErrors);
@@ -130,11 +123,9 @@ const Testimonials = () => {
     setCurrentTestimonial(testimonial);
     setFormData({
       name: testimonial.name || '',
-      role: testimonial.role || '', // Changed from 'position' to 'role'
-      company: testimonial.company || '',
-      feedback: testimonial.feedback || '', // Changed from 'content' to 'feedback'
-      rating: testimonial.rating || 5,
-      featured: testimonial.featured || false
+      role: testimonial.role || '',
+      feedback: testimonial.feedback || '',
+      image: testimonial.image || ''
     });
     setIsModalOpen(true);
   };
@@ -158,30 +149,12 @@ const Testimonials = () => {
     setCurrentTestimonial(null);
     setFormData({
       name: '',
-      role: '', // Changed from 'position' to 'role'
-      company: '',
-      feedback: '', // Changed from 'content' to 'feedback'
-      rating: 5,
-      featured: false
+      role: '',
+      feedback: '',
+      image: ''
     });
     setErrors({});
     setIsModalOpen(true);
-  };
-
-  // Render star rating
-  const renderRating = (rating) => {
-    return (
-      <div className="flex">
-        {[...Array(5)].map((_, i) => (
-          <Star
-            key={i}
-            size={16}
-            className={i < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}
-          />
-        ))}
-        <span className="ml-2 text-sm text-gray-600">({rating})</span>
-      </div>
-    );
   };
 
   // Columns configuration for the table
@@ -191,30 +164,8 @@ const Testimonials = () => {
       accessor: 'name'
     },
     {
-      header: 'Role', // Changed from 'Position' to 'Role'
-      accessor: 'role' // Changed from 'position' to 'role'
-    },
-    {
-      header: 'Company',
-      accessor: 'company'
-    },
-    {
-      header: 'Rating',
-      accessor: 'rating',
-      render: (value) => renderRating(value)
-    },
-    {
-      header: 'Featured',
-      accessor: 'featured',
-      render: (value) => (
-        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-          value 
-            ? 'bg-green-100 text-green-800' 
-            : 'bg-gray-100 text-gray-800'
-        }`}>
-          {value ? 'Yes' : 'No'}
-        </span>
-      )
+      header: 'Role',
+      accessor: 'role'
     }
   ];
 
@@ -288,53 +239,32 @@ const Testimonials = () => {
               required
             />
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                label="Role" // Changed from 'Position' to 'Role'
-                name="role" // Changed from 'position' to 'role'
-                value={formData.role} // Changed from 'position' to 'role'
-                onChange={handleInputChange}
-                placeholder="Enter role/title" // Changed from 'position' to 'role'
-              />
-              
-              <FormField
-                label="Company"
-                name="company"
-                value={formData.company}
-                onChange={handleInputChange}
-                placeholder="Enter company name"
-              />
-            </div>
-            
             <FormField
-              label="Rating (1-5)"
-              name="rating"
-              type="number"
-              value={formData.rating}
+              label="Role"
+              name="role"
+              value={formData.role}
               onChange={handleInputChange}
-              error={errors.rating}
-              min="1"
-              max="5"
+              placeholder="Enter role/title"
             />
             
             <FormField
-              label="Testimonial Feedback" // Changed from 'Testimonial Content' to 'Testimonial Feedback'
-              name="feedback" // Changed from 'content' to 'feedback'
+              label="Testimonial Feedback"
+              name="feedback"
               type="textarea"
-              value={formData.feedback} // Changed from 'content' to 'feedback'
+              value={formData.feedback}
               onChange={handleInputChange}
-              error={errors.feedback} // Changed from 'content' to 'feedback'
-              placeholder="Enter testimonial feedback" // Changed from 'testimonial content' to 'testimonial feedback'
+              error={errors.feedback}
+              placeholder="Enter testimonial feedback"
               rows={4}
               required
             />
             
             <FormField
-              label="Featured Testimonial"
-              name="featured"
-              type="checkbox"
-              value={formData.featured}
+              label="Image URL"
+              name="image"
+              value={formData.image}
               onChange={handleInputChange}
+              placeholder="Enter image URL (optional)"
             />
           </div>
         </ModalForm>
