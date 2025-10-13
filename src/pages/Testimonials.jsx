@@ -21,9 +21,9 @@ const Testimonials = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
-    position: '',
+    role: '', // Changed from 'position' to 'role' to match backend
     company: '',
-    content: '',
+    feedback: '', // Changed from 'content' to 'feedback' to match backend
     rating: 5,
     featured: false
   });
@@ -55,7 +55,7 @@ const Testimonials = () => {
   const filteredTestimonials = testimonials && Array.isArray(testimonials) ? testimonials.filter(testimonial =>
     (testimonial.name && testimonial.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (testimonial.company && testimonial.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (testimonial.position && testimonial.position.toLowerCase().includes(searchTerm.toLowerCase()))
+    (testimonial.role && testimonial.role.toLowerCase().includes(searchTerm.toLowerCase())) // Changed from 'position' to 'role'
   ) : [];
 
   // Handle form input changes
@@ -84,8 +84,8 @@ const Testimonials = () => {
       newErrors.name = 'Name is required';
     }
     
-    if (!formData.content.trim()) {
-      newErrors.content = 'Testimonial content is required';
+    if (!formData.feedback.trim()) { // Changed from 'content' to 'feedback'
+      newErrors.feedback = 'Testimonial feedback is required'; // Changed from 'content' to 'feedback'
     }
     
     if (formData.rating < 1 || formData.rating > 5) {
@@ -130,9 +130,9 @@ const Testimonials = () => {
     setCurrentTestimonial(testimonial);
     setFormData({
       name: testimonial.name || '',
-      position: testimonial.position || '',
+      role: testimonial.role || '', // Changed from 'position' to 'role'
       company: testimonial.company || '',
-      content: testimonial.content || '',
+      feedback: testimonial.feedback || '', // Changed from 'content' to 'feedback'
       rating: testimonial.rating || 5,
       featured: testimonial.featured || false
     });
@@ -158,9 +158,9 @@ const Testimonials = () => {
     setCurrentTestimonial(null);
     setFormData({
       name: '',
-      position: '',
+      role: '', // Changed from 'position' to 'role'
       company: '',
-      content: '',
+      feedback: '', // Changed from 'content' to 'feedback'
       rating: 5,
       featured: false
     });
@@ -191,8 +191,8 @@ const Testimonials = () => {
       accessor: 'name'
     },
     {
-      header: 'Position',
-      accessor: 'position'
+      header: 'Role', // Changed from 'Position' to 'Role'
+      accessor: 'role' // Changed from 'position' to 'role'
     },
     {
       header: 'Company',
@@ -290,11 +290,11 @@ const Testimonials = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
-                label="Position"
-                name="position"
-                value={formData.position}
+                label="Role" // Changed from 'Position' to 'Role'
+                name="role" // Changed from 'position' to 'role'
+                value={formData.role} // Changed from 'position' to 'role'
                 onChange={handleInputChange}
-                placeholder="Enter position/title"
+                placeholder="Enter role/title" // Changed from 'position' to 'role'
               />
               
               <FormField
@@ -318,13 +318,13 @@ const Testimonials = () => {
             />
             
             <FormField
-              label="Testimonial Content"
-              name="content"
+              label="Testimonial Feedback" // Changed from 'Testimonial Content' to 'Testimonial Feedback'
+              name="feedback" // Changed from 'content' to 'feedback'
               type="textarea"
-              value={formData.content}
+              value={formData.feedback} // Changed from 'content' to 'feedback'
               onChange={handleInputChange}
-              error={errors.content}
-              placeholder="Enter testimonial content"
+              error={errors.feedback} // Changed from 'content' to 'feedback'
+              placeholder="Enter testimonial feedback" // Changed from 'testimonial content' to 'testimonial feedback'
               rows={4}
               required
             />
