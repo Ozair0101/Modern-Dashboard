@@ -139,10 +139,16 @@ const Dashboard = () => {
           </div>
           <div className="mt-4 md:mt-0">
             <button 
-              className="px-4 py-2 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+              className="px-4 py-2 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors mr-2"
               onClick={() => navigate('/dashboard/profile')}
             >
               View Profile
+            </button>
+            <button 
+              className="px-4 py-2 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+              onClick={() => navigate('/dashboard/settings')}
+            >
+              Settings
             </button>
           </div>
         </div>
