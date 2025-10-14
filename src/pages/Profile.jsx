@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import { useAuth } from '../contexts/AuthContext';
-import { getProfile, updateProfile } from '../api/api';
+import { getProfile, updateProfile, getUserProfile, updateUserProfile } from '../api/api';
 import { toast } from 'react-toastify';
 
 const Profile = () => {
@@ -20,7 +20,11 @@ const Profile = () => {
     location: '',
     website: '',
     company: '',
-    address: ''
+    address: '',
+    about_me: '',
+    phone_number: '',
+    date_of_birth: '',
+    profile_picture: ''
   });
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -36,9 +40,39 @@ const Profile = () => {
   const fetchProfile = async () => {
     try {
       setLoading(true);
-      const response = await getProfile();
-      setProfile(response.data);
-      setPreviewImage(response.data.profile_image || '');
+      // First try to get the new profile structure
+      if (user && user.id) {
+        try {
+          const response = await getUserProfile(user.id);
+          // Merge the profile data with user data for display
+          setProfile(prev => ({
+            ...prev,
+            ...response.data,
+            name: user.name || '',
+            email: user.email || '',
+            title: user.title || '',
+            bio: user.bio || '',
+            about: user.about || '',
+            profile_image: user.profile_image || '',
+            phone: user.phone || '',
+            location: user.location || '',
+            website: user.website || '',
+            company: user.company || '',
+            address: user.address || ''
+          }));
+          setPreviewImage(response.data.profile_picture || user.profile_image || '');
+        } catch (error) {
+          // If new profile doesn't exist, fall back to old structure
+          const response = await getProfile();
+          setProfile(response.data);
+          setPreviewImage(response.data.profile_image || '');
+        }
+      } else {
+        // Fallback if user context is not available
+        const response = await getProfile();
+        setProfile(response.data);
+        setPreviewImage(response.data.profile_image || '');
+      }
     } catch (error) {
       toast.error('Failed to fetch profile data');
       console.error('Error fetching profile:', error);
@@ -88,14 +122,14 @@ const Profile = () => {
       // Update profile state with file (we'll handle upload on form submit)
       setProfile(prev => ({
         ...prev,
-        profile_image: file
+        profile_picture: file
       }));
       
       // Clear any previous image errors
-      if (errors.profile_image) {
+      if (errors.profile_picture) {
         setErrors(prev => ({
           ...prev,
-          profile_image: ''
+          profile_picture: ''
         }));
       }
     }
@@ -109,7 +143,7 @@ const Profile = () => {
     setPreviewImage('');
     setProfile(prev => ({
       ...prev,
-      profile_image: ''
+      profile_picture: ''
     }));
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -144,15 +178,24 @@ const Profile = () => {
       // Create FormData for file upload
       const formData = new FormData();
       
-      // Append all profile fields
+      // Append all profile fields for the new profile system
       Object.keys(profile).forEach(key => {
-        // Skip profile_image for now, we'll handle it separately
-        if (key !== 'profile_image') {
+        // Skip profile_picture for now, we'll handle it separately
+        if (key !== 'profile_picture' && key !== 'profile_image') {
           formData.append(key, profile[key] || '');
         }
       });
       
-      // Handle profile image
+      // Handle profile picture
+      if (profile.profile_picture && typeof profile.profile_picture !== 'string') {
+        // It's a file object
+        formData.append('profile_picture', profile.profile_picture);
+      } else if (typeof profile.profile_picture === 'string') {
+        // It's already a URL, send it as is
+        formData.append('profile_picture', profile.profile_picture);
+      }
+      
+      // For the old system, handle profile_image
       if (profile.profile_image && typeof profile.profile_image !== 'string') {
         // It's a file object
         formData.append('profile_image', profile.profile_image);
@@ -161,20 +204,34 @@ const Profile = () => {
         formData.append('profile_image', profile.profile_image);
       }
       
-      // For other fields that might be file objects (like resume), handle them similarly
-      // In this case, we're only handling profile_image
+      let response;
+      // Update the new profile system if user ID is available
+      if (user && user.id) {
+        response = await updateUserProfile(user.id, formData);
+        // Also update the old system for backward compatibility
+        await updateProfile(formData);
+      } else {
+        // Fallback to old system
+        response = await updateProfile(formData);
+      }
       
-      const response = await updateProfile(formData);
+      // Update state with response data
       setProfile(response.data);
-      setPreviewImage(response.data.profile_image || '');
+      setPreviewImage(response.data.profile_picture || response.data.profile_image || '');
       
       // Update user in context if setUser is available and is a function
       if (setUser && typeof setUser === 'function') {
-        setUser(response.data);
+        setUser({
+          ...user,
+          ...response.data
+        });
       }
       
       // Also update localStorage
-      localStorage.setItem('userData', JSON.stringify(response.data));
+      localStorage.setItem('userData', JSON.stringify({
+        ...user,
+        ...response.data
+      }));
       
       setIsEditing(false);
       toast.success('Profile updated successfully');
@@ -238,7 +295,7 @@ const Profile = () => {
                         </div>
                         <div className="flex flex-col items-start justify-center">
                           <h6 className="mb-0 leading-normal text-sm dark:text-white">Mobile</h6>
-                          <span className="leading-tight dark:text-white/80 text-xs">{profile.phone || 'Not provided'}</span>
+                          <span className="leading-tight dark:text-white/80 text-xs">{profile.phone || profile.phone_number || 'Not provided'}</span>
                         </div>
                       </div>
                     </li>
@@ -260,7 +317,7 @@ const Profile = () => {
                         </div>
                         <div className="flex flex-col items-start justify-center">
                           <h6 className="mb-0 leading-normal text-sm dark:text-white">Location</h6>
-                          <span className="leading-tight dark:text-white/80 text-xs">{profile.location || 'Not provided'}</span>
+                          <span className="leading-tight dark:text-white/80 text-xs">{profile.location || profile.address || 'Not provided'}</span>
                         </div>
                       </div>
                     </li>
@@ -351,6 +408,7 @@ const Profile = () => {
                         <p className="text-xs text-gray-500 mt-1">JPG, PNG, GIF up to 5MB</p>
                       </div>
                     </div>
+                    {errors.profile_picture && <p className="mt-1 text-sm text-red-600">{errors.profile_picture}</p>}
                     {errors.profile_image && <p className="mt-1 text-sm text-red-600">{errors.profile_image}</p>}
                   </div>
                   
@@ -394,8 +452,19 @@ const Profile = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
                       <input
                         type="text"
-                        name="phone"
-                        value={profile.phone}
+                        name="phone_number"
+                        value={profile.phone_number || profile.phone}
+                        onChange={handleInputChange}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                      <input
+                        type="date"
+                        name="date_of_birth"
+                        value={profile.date_of_birth}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
@@ -405,8 +474,8 @@ const Profile = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
                       <input
                         type="text"
-                        name="location"
-                        value={profile.location}
+                        name="address"
+                        value={profile.address || profile.location}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
@@ -437,10 +506,10 @@ const Profile = () => {
                   </div>
                   
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">About Me</label>
                     <textarea
-                      name="bio"
-                      value={profile.bio}
+                      name="about_me"
+                      value={profile.about_me}
                       onChange={handleInputChange}
                       rows="3"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -448,23 +517,12 @@ const Profile = () => {
                   </div>
                   
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">About</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
                     <textarea
-                      name="about"
-                      value={profile.about}
+                      name="bio"
+                      value={profile.bio}
                       onChange={handleInputChange}
                       rows="4"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    ></textarea>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                    <textarea
-                      name="address"
-                      value={profile.address}
-                      onChange={handleInputChange}
-                      rows="2"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     ></textarea>
                   </div>
@@ -486,13 +544,18 @@ const Profile = () => {
                   </div>
                   
                   <div className="mb-4">
+                    <h6 className="font-bold leading-tight uppercase dark:text-white text-xs text-slate-500">About Me</h6>
+                    <p className="text-gray-700">{profile.about_me || 'Not provided'}</p>
+                  </div>
+                  
+                  <div className="mb-4">
                     <h6 className="font-bold leading-tight uppercase dark:text-white text-xs text-slate-500">Bio</h6>
                     <p className="text-gray-700">{profile.bio || 'Not provided'}</p>
                   </div>
                   
                   <div className="mb-4">
-                    <h6 className="font-bold leading-tight uppercase dark:text-white text-xs text-slate-500">About</h6>
-                    <p className="text-gray-700">{profile.about || 'Not provided'}</p>
+                    <h6 className="font-bold leading-tight uppercase dark:text-white text-xs text-slate-500">Date of Birth</h6>
+                    <p className="text-gray-700">{profile.date_of_birth || 'Not provided'}</p>
                   </div>
                   
                   <div className="mb-4">
@@ -502,7 +565,7 @@ const Profile = () => {
                   
                   <div className="mb-4">
                     <h6 className="font-bold leading-tight uppercase dark:text-white text-xs text-slate-500">Address</h6>
-                    <p className="text-gray-700">{profile.address || 'Not provided'}</p>
+                    <p className="text-gray-700">{profile.address || profile.location || 'Not provided'}</p>
                   </div>
                 </div>
               )}

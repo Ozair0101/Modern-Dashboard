@@ -41,6 +41,11 @@ export const getAuthUser = () => api.get('/user');
 export const getProfile = () => api.get('/profile');
 export const updateProfile = (data) => api.put('/profile', data);
 
+// New Profile API functions
+export const getUserProfile = (userId) => api.get(`/profile/${userId}`);
+export const createUserProfile = (data) => api.post('/profile', data);
+export const updateUserProfile = (userId, data) => api.put(`/profile/${userId}`, data);
+
 // Generic CRUD functions
 export const getAll = (resource) => api.get(`/${resource}`);
 export const getOne = (resource, id) => api.get(`/${resource}/${id}`);
