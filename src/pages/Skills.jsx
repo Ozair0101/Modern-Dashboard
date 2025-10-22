@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Search, AlertTriangle } from 'lucide-react';
+import { Plus, Search, AlertTriangle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toast } from 'react-toastify';
 import DashboardLayout from '../components/DashboardLayout';
 import Table from '../components/Table';
@@ -22,29 +22,70 @@ const Skills = () => {
   const [formData, setFormData] = useState({
     name: '',
     level: 80,
-    category: ''
+    category: '',
+    icon: '' // Added icon field
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Pagination state
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    lastPage: 1,
+    perPage: 10,
+    total: 0,
+    from: 0,
+    to: 0
+  });
 
   // Fetch skills
   useEffect(() => {
-    fetchSkills();
+    fetchSkills(pagination.currentPage);
   }, []);
 
-  const fetchSkills = async () => {
+  const fetchSkills = async (page = 1) => {
     try {
       setLoading(true);
-      const response = await getSkills();
-      // Handle paginated response - extract data array
-      const skillsData = response.data.data || response.data || [];
-      setSkills(skillsData);
+      const response = await getSkills({ page: page });
+      
+      // Handle paginated response
+      if (response.data && response.data.data) {
+        setSkills(response.data.data);
+        setPagination({
+          currentPage: response.data.current_page,
+          lastPage: response.data.last_page,
+          perPage: response.data.per_page,
+          total: response.data.total,
+          from: response.data.from,
+          to: response.data.to
+        });
+      } else {
+        // Fallback for non-paginated response
+        const skillsData = response.data.data || response.data || [];
+        setSkills(skillsData);
+        setPagination({
+          currentPage: 1,
+          lastPage: 1,
+          perPage: skillsData.length,
+          total: skillsData.length,
+          from: 1,
+          to: skillsData.length
+        });
+      }
+      
+      console.log('Skills:', response.data);
     } catch (error) {
       toast.error('Failed to fetch skills');
       console.error('Error fetching skills:', error);
       setSkills([]); // Set to empty array on error
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Handle page change
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= pagination.lastPage) {
+      fetchSkills(newPage);
     }
   };
 
@@ -107,7 +148,7 @@ const Skills = () => {
       }
       
       setIsModalOpen(false);
-      fetchSkills();
+      fetchSkills(pagination.currentPage); // Refresh current page
     } catch (error) {
       toast.error('Failed to save skill');
       console.error('Error saving skill:', error);
@@ -122,7 +163,8 @@ const Skills = () => {
     setFormData({
       name: skill.name || '',
       level: skill.level || 80,
-      category: skill.category || ''
+      category: skill.category || '',
+      icon: skill.icon || '' // Added icon field
     });
     setIsModalOpen(true);
   };
@@ -133,7 +175,7 @@ const Skills = () => {
       try {
         await deleteSkill(skill.id);
         toast.success('Skill deleted successfully');
-        fetchSkills();
+        fetchSkills(pagination.currentPage); // Refresh current page
       } catch (error) {
         toast.error('Failed to delete skill');
         console.error('Error deleting skill:', error);
@@ -147,7 +189,8 @@ const Skills = () => {
     setFormData({
       name: '',
       level: 80,
-      category: ''
+      category: '',
+      icon: '' // Added icon field
     });
     setErrors({});
     setIsModalOpen(true);
@@ -162,6 +205,17 @@ const Skills = () => {
     {
       header: 'Category',
       accessor: 'category'
+    },
+    {
+      header: 'Icon',
+      accessor: 'icon',
+      render: (value) => value ? (
+        <div className="flex items-center">
+          <span className="text-2xl">{value}</span>
+        </div>
+      ) : (
+        <span className="text-gray-400">No icon</span>
+      )
     },
     {
       header: 'Level',
@@ -230,6 +284,46 @@ const Skills = () => {
           />
         </motion.div>
 
+        {/* Pagination */}
+        {!loading && skills && skills.length > 0 && (
+          <div className="mt-6 flex items-center justify-between">
+            <div className="text-sm text-gray-700">
+              Showing <span className="font-medium">{pagination.from}</span> to{' '}
+              <span className="font-medium">{pagination.to}</span> of{' '}
+              <span className="font-medium">{pagination.total}</span> results
+            </div>
+            <div className="flex space-x-2">
+              <button
+                onClick={() => handlePageChange(pagination.currentPage - 1)}
+                disabled={pagination.currentPage === 1}
+                className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${
+                  pagination.currentPage === 1
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+                }`}
+              >
+                <ChevronLeft size={16} className="mr-1" />
+                Previous
+              </button>
+              <div className="flex items-center px-4 py-2 text-sm text-gray-700">
+                Page {pagination.currentPage} of {pagination.lastPage}
+              </div>
+              <button
+                onClick={() => handlePageChange(pagination.currentPage + 1)}
+                disabled={pagination.currentPage === pagination.lastPage}
+                className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${
+                  pagination.currentPage === pagination.lastPage
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+                }`}
+              >
+                Next
+                <ChevronRight size={16} className="ml-1" />
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Modal Form */}
         <ModalForm
           isOpen={isModalOpen}
@@ -256,6 +350,15 @@ const Skills = () => {
               value={formData.category}
               onChange={handleInputChange}
               placeholder="Enter category (e.g., Frontend, Backend)"
+            />
+            
+            <FormField
+              label="Icon (Emoji or Icon Class)"
+              name="icon"
+              value={formData.icon}
+              onChange={handleInputChange}
+              placeholder="Enter icon (e.g., 💻, fa-code, etc.)"
+              helpText="Enter an emoji or icon class to represent this skill"
             />
             
             <FormField

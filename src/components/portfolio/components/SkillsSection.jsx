@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { portfolioData } from '../data/portfolioData';
-
+import { 
+  getSkills, 
+} from '../../../api/api';
 const SkillsSection = () => {
   const { skills } = portfolioData;
 
@@ -15,7 +17,29 @@ const SkillsSection = () => {
       }
     }
   };
-
+  const [skills1, setSkills] = useState([]);
+  const [loading, setLoading] = useState(false);
+  // Fetch skills
+    useEffect(() => {
+      fetchSkills();
+    }, []);
+  
+    const fetchSkills = async () => {
+      try {
+        setLoading(true);
+        const response = await getSkills();
+        // Handle paginated response - extract data array
+        const skillsData = response.data.data || response.data || [];
+        setSkills(skillsData);
+        console.log('Skills:', skillsData);
+      } catch (error) {
+        toast.error('Failed to fetch skills');
+        console.error('Error fetching skills:', error);
+        setSkills([]); // Set to empty array on error
+      } finally {
+        setLoading(false);
+      }
+    };
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
